@@ -1,56 +1,59 @@
-import type { Pokemon } from "@bgoff1/pokeapi-types";
-import type { CardProps } from '~/components/Card';
-import { useState, useEffect } from 'react';
-import Card from '~/components/Card';
+import type { CharacterCardProps } from '~/components/CharacterCard';
+import { useState, useRef, useEffect } from 'react';
+import { getPokemons, getPokemon } from '~/utils/pokemon';
+import ListView from '~/components/ListView';
+import CharacterCard from '~/components/CharacterCard';
 
-interface PokemonWithArtwork extends Pokemon {
-  sprites: Pokemon['sprites'] & {
-    other?: {
-      ['official-artwork']?: {
-        front_default?: string;
-      };
-    };
-  };
-}
-
-async function fetchCardOption(url: string) {
-  const response = await fetch(url);
-  const data: PokemonWithArtwork = await response.json();
-  return {
-    name: data.name,
-    thumbnail: data.sprites.other?.['official-artwork']?.front_default,
-    types: data.types.map(({ type }) => type.name),
-    weight: data.weight,
-    height: data.height,
-    hp: data.stats.find(({ stat }) => stat.name === 'hp')?.base_stat,
-    attack: data.stats.find(({ stat }) => stat.name === 'attack')?.base_stat,
-    defense: data.stats.find(({ stat }) => stat.name === 'defense')?.base_stat,
-    speed: data.stats.find(({ stat }) => stat.name === 'speed')?.base_stat,
-    exp: data.base_experience,
-  }
-}
 
 export default function PokemonPage() {
-  const [cards, setCards] = useState<Array<CardProps>>([]);
+  const [pokemons, setPokemons] = useState<Array<CharacterCardProps>>([]);
+  const isLoading = useRef<boolean>(false);
+  const nextPageUrl = useRef<string>(null);
+
+
+  const getAndSetPokemons = async (getPokemonsUrl?: string) => {
+    if (isLoading.current) return;
+    isLoading.current = true;
+
+    const data = await getPokemons(getPokemonsUrl);
+
+    if (data) {
+      const newPokemons = await Promise.all(
+        data.results.map(({ url }) => getPokemon(url))
+      );
+
+      setPokemons(prevPokemons => [
+        ...prevPokemons,
+        ...newPokemons,
+      ]);
+
+      nextPageUrl.current = data.next;
+    }
+    isLoading.current = false;
+  }
+
+
+  const nextPageHandler = async () => {
+    if (!nextPageUrl.current) return;
+    getAndSetPokemons(nextPageUrl.current);
+  }
+
 
   useEffect(() => {
-    const fetchCards = async () => {
-      const response = await fetch('https://pokeapi.co/api/v2/pokemon');
-      const { results } = await response.json();
-      const cards = await Promise.all(results.map(({ url }: { url: string }) => fetchCardOption(url)));
-      setCards(cards);
-    }
-    fetchCards();
+    getAndSetPokemons();
   }, []);
 
+
   return (
-    <>
-      {cards.map((card) => (
-        <Card
-          key={card.name}
-          {...card}
+    <ListView
+      nextPageHandler={nextPageHandler}
+    >
+      {pokemons.map(pokemon => (
+        <CharacterCard
+          key={pokemon.name}
+          {...pokemon}
         />
       ))}
-    </>
+    </ListView>
   );
 }
