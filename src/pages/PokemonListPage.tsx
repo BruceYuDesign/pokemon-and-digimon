@@ -48,6 +48,7 @@ export default function PokemonListPage() {
     window.scrollTo(0, listCache.scrollY.current);
 
     // 記錄捲動位置
+    // TODO 滾動中會無法取得捲動位置
     const setScrollYCache = () => {
       listCache.scrollY.current = window.scrollY;
     }

@@ -31,7 +31,7 @@ type StatName = 'hp' | 'attack' | 'defense' | 'speed';
 const statNames = ['hp', 'attack', 'defense', 'speed'];
 
 
-const baseUrl = 'https://pokeapi.co/api/v2/pokemon';
+const baseUrl = 'https://pokeapi.co/api/v2/pokemon?limit=18';
 
 
 export const typeColors: Record<string, string> = {

@@ -29,7 +29,10 @@ export default function ListView(props: ListViewProps) {
   // TODO 在入完不要顯示 Spinner
   return (
     <>
-      <div className='p-4 grid grid-cols-2 gap-4 auto-rows-max'>
+      <div
+        className='p-4 grid grid-cols-2 gap-4 auto-rows-max
+        md:grid-cols-3'
+      >
         {props.children}
       </div>
       <div

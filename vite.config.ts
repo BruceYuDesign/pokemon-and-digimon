@@ -3,6 +3,7 @@ import path from 'node:path';
 import react from '@vitejs/plugin-react-swc';
 import tailwindcss from '@tailwindcss/vite';
 
+
 export default defineConfig({
   root: 'src',
   build: {
