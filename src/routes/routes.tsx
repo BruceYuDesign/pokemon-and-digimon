@@ -1,23 +1,25 @@
 import { RouteObject } from 'react-router-dom';
-import BasicLayout from '~/layouts/BasicLayout';
+import CharacterLayout from '~/layouts/CharacterLayout';
 import HomePage from '~/pages/HomePage';
-import PokemonPage from '~/pages/PokemonPage';
+import PokemonListPage from '~/pages/PokemonListPage';
+import PokemonDetailPage from '~/pages/PokemonDetailPage';
+
 
 export const routes: Array<RouteObject> = [
   {
-    element: <BasicLayout/>,
+    element: <CharacterLayout/>,
     children: [
       {
-        path: '',
+        path: '/',
         element: <HomePage/>,
       },
       {
         path: '/pokemon',
-        element: <PokemonPage/>,
+        element: <PokemonListPage/>,
       },
       {
-        path: '/digimon',
-        element: <></>,
+        path: '/pokemon/:pokemonId',
+        element: <PokemonDetailPage/>,
       },
     ]
   },

@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react';
+import { BiLoader } from 'react-icons/bi';
 
 
 interface ListViewProps {
@@ -25,12 +26,20 @@ export default function ListView(props: ListViewProps) {
   }, []);
 
 
+  // TODO 在入完不要顯示 Spinner
   return (
     <>
-      <div className='grid grid-cols-2 gap-4 auto-rows-max'>
+      <div className='p-4 grid grid-cols-2 gap-4 auto-rows-max'>
         {props.children}
       </div>
-      <div ref={nextPageElement}></div>
+      <div
+        className='h-16 flex items-center justify-center'
+        ref={nextPageElement}
+      >
+        <BiLoader
+          className='w-8 h-8 mx-auto text-white/50 animate-spin'
+        />
+      </div>
     </>
   );
 }
