@@ -1,6 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { getPokemons, getPokemon } from '~/services/pokemonServices';
 import { useListCache } from '~/context/ListCacheContext';
+import PageHeader from '~/components/PageHeader';
 import ListView from '~/components/ListView';
 import CharacterCard from '~/components/CharacterCard';
 
@@ -48,7 +49,6 @@ export default function PokemonListPage() {
     window.scrollTo(0, listCache.scrollY.current);
 
     // 記錄捲動位置
-    // TODO 滾動中會無法取得捲動位置
     const setScrollYCache = () => {
       listCache.scrollY.current = window.scrollY;
     }
@@ -58,15 +58,23 @@ export default function PokemonListPage() {
 
 
   return (
-    <ListView
-      nextPageHandler={nextPageHandler}
-    >
-      {listCache.items.map(pokemon => (
-        <CharacterCard
-          key={pokemon.name}
-          {...pokemon}
-        />
-      ))}
-    </ListView>
+    <div className='relative pt-12'>
+      <PageHeader
+        backgroundColor='#D53B47'
+        prevPageUrl='/'
+        prevPageName='Home'
+        pageName='Pokemon'
+      />
+      <ListView
+        nextPageHandler={nextPageHandler}
+      >
+        {listCache.items.map(pokemon => (
+          <CharacterCard
+            key={pokemon.name}
+            {...pokemon}
+          />
+        ))}
+      </ListView>
+    </div>
   );
 }

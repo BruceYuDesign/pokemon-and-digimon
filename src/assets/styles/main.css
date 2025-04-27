@@ -1,1 +1,15 @@
 @import "tailwindcss";
+
+
+@layer base {
+  body {
+    @apply bg-[#2B292C] text-white;
+  }
+}
+
+
+@layer utilities {
+  .util-container {
+    @apply max-w-screen-lg w-full mx-auto;
+  }
+}

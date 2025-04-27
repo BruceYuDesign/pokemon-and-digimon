@@ -12,7 +12,7 @@ export default function CharacterCard(props: CharacterCardProps) {
   const { ref, inView } = useInView({
     triggerOnce: false,
     threshold: 0,
-    rootMargin: '0px 0px 0px 0px',
+    rootMargin: '100px 0px 100px 0px',
   });
 
 
@@ -29,25 +29,26 @@ export default function CharacterCard(props: CharacterCardProps) {
       {
         inView && (
           <Link
-            className='flex flex-col gap-4 p-4 aspect-square rounded-2xl overflow-hidden'
+            className='flex flex-col items-stretch justify-between p-4 aspect-square rounded-2xl overflow-hidden'
             onClick={handleOnClick}
             to={`/pokemon/${props.id}`}
             style={{
               backgroundColor: props.color,
             }}
+            viewTransition
           >
             <div className='h-3/4 flex items-center justify-center'>
               {
                 props.thumbnail && (
                   <img
-                    className='h-full aspect-square'
+                    className='h-full w-full object-contain'
                     src={props.thumbnail}
                     alt={props.name || '未知'}
                   />
                 )
               }
             </div>
-            <h3 className='text-center text-white text-xl whitespace-nowrap text-ellipsis overflow-hidden'>
+            <h3 className='h-8 shrink-0 text-center text-xl whitespace-nowrap text-ellipsis overflow-hidden'>
               {props.name || '未知'}
             </h3>
           </Link>

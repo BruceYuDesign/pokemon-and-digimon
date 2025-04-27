@@ -10,7 +10,7 @@ export default function ProgressBar(props: ProgressBarProps) {
   return (
     <div className='w-full flex flex-row justify-start items-center'>
       {/* 標籤 */}
-      <span className='w-12 text-white/50 text-sm'>
+      <span className='w-12 opacity-50 text-sm'>
         {props.label}
       </span>
       <div className='relative flex flex-row justify-start items-stretch bg-white w-full h-6 rounded-full overflow-hidden'>
@@ -33,7 +33,7 @@ export default function ProgressBar(props: ProgressBarProps) {
             backgroundColor: props.progressColor,
           }}
         >
-          <span className='ml-auto text-white text-sm'>
+          <span className='ml-auto text-sm'>
             {props.value}/{props.maxValue}
           </span>
         </div>

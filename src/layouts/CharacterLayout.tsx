@@ -5,8 +5,11 @@ import { CharacterDetailProvider } from '~/context/CharacterDetailContext';
 
 export default function CharacterLayout() {
   return (
-    <div className='w-full min-h-dvh bg-[#2B292C]'>
-      <div className='max-w-3xl w-full mx-auto flex flex-col'>
+    <div className='w-full min-h-dvh'>
+      <div
+        className='util-container
+        flex flex-col'
+      >
         <ListCacheProvider>
           <CharacterDetailProvider>
             <Outlet />

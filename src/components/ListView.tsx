@@ -40,7 +40,7 @@ export default function ListView(props: ListViewProps) {
         ref={nextPageElement}
       >
         <BiLoader
-          className='w-8 h-8 mx-auto text-white/50 animate-spin'
+          className='w-8 h-8 mx-auto opacity-50 animate-spin'
         />
       </div>
     </>

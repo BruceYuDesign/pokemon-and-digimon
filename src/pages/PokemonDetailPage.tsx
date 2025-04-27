@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { FaArrowLeft } from 'react-icons/fa6';
+import { useParams } from 'react-router-dom';
+import PageHeader from '~/components/PageHeader';
 import ProgressBar from '~/components/ProgressBar';
 import { useCharacterDetail } from '~/context/CharacterDetailContext';
 import { typeColors, getPokemon } from '~/services/pokemonServices';
@@ -27,26 +27,17 @@ export default function PokemonDetailPage() {
 
 
   return (
-    <div className='relative flex flex-col items-stretch justify-stretch w-full h-full'>
-      <header
-        className='h-12 px-4 absolute top-0 right-0 left-0 flex flex-row items-center justify-between'
-      >
-        <Link
-          className='flex flex-row items-center gap-4 text-white text-lg'
-          to='/pokemon'
-        >
-          <FaArrowLeft />
-          Pokemon
-        </Link>
-        <span className='text-white text-lg'>
-          #{pokemonId?.padStart(4, '0')}
-        </span>
-      </header>
+    <>
+      <PageHeader
+        prevPageUrl='/pokemon'
+        prevPageName='Pokemon'
+        pageName={`#${pokemonId?.padStart(4, '0')}`}
+      />
       {/* 角色圖片 */}
       <div
         className='flex items-center justify-center h-[280px] rounded-b-4xl'
         style={{
-          backgroundColor: characterDetail?.color || '#888888',
+          backgroundColor: characterDetail?.color || '#3A393B',
         }}
       >
         {
@@ -54,7 +45,7 @@ export default function PokemonDetailPage() {
             <img
               className='h-2/3 w-auto'
               src={characterDetail?.thumbnail || ''}
-              alt={characterDetail?.name || '未知'}
+              alt={characterDetail?.name || 'Unknown'}
             />
           )
         }
@@ -62,8 +53,8 @@ export default function PokemonDetailPage() {
       {/* 角色資訊 */}
       <div className='flex flex-col items-center gap-6 p-6'>
         {/* 名稱 */}
-        <h2 className='text-white text-3xl'>
-          {characterDetail?.name || '未知'}
+        <h2 className='text-3xl'>
+          {characterDetail?.name || 'Unknown'}
         </h2>
         {/* 屬性 */}
         <div className='flex flex-row gap-4'>
@@ -71,39 +62,39 @@ export default function PokemonDetailPage() {
             characterDetail?.types?.map(type => (
               <span
                 key={type}
-                className='w-28 h-6 flex items-center justify-center text-white rounded-full'
+                className='w-28 h-6 flex items-center justify-center rounded-full'
                 style={{
                   backgroundColor: typeColors[type],
                 }}
               >
                 {type}
               </span>
-            )) || '未知'
+            )) || 'Unknown'
           }
         </div>
         {/* 大小 */}
         <div className='w-full flex flex-row justify-around items-start'>
           {/* 體重 */}
           <div className='w-32 flex flex-col items-center gap-2'>
-            <p className='text-white text-xl'>
-              {characterDetail?.weight ? characterDetail.weight / 10 : '未知'} KG
+            <p className='text-xl'>
+              {characterDetail?.weight ? characterDetail.weight / 10 : 0} KG
             </p>
-            <span className='text-white/50 text-sm'>
+            <span className='text-sm opacity-50'>
               Weight
             </span>
           </div>
           {/* 身高 */}
           <div className='w-32 flex flex-col items-center gap-2'>
-            <p className='text-white text-xl'>
-              {characterDetail?.height ? characterDetail.height / 10 : '未知'} M
+            <p className='text-xl'>
+              {characterDetail?.height ? characterDetail.height / 10 : 0} M
             </p>
-            <span className='text-white/50 text-sm'>
+            <span className='text-sm opacity-50'>
               Height
             </span>
           </div>
         </div>
         {/* 數值 */}
-        <h3 className='text-white text-xl'>
+        <h3 className='text-xl'>
           Base Stats
         </h3>
         <div className='w-full flex flex-col items-center gap-4'>
@@ -144,6 +135,6 @@ export default function PokemonDetailPage() {
           />
         </div>
       </div>
-    </div>
+    </>
   );
 }
