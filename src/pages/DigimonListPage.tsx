@@ -1,38 +1,32 @@
-import type { PokemonDetail } from '~/services/pokemonService';
+import type { DigimonItem } from '~/services/digimonService';
 import { useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getPokemons, getPokemon } from '~/services/pokemonService';
+import { getDigimons } from '~/services/digimonService';
 import { useListCache } from '~/context/ListCacheContext';
-import { usePokemonDetail } from '~/context/pokemonDetailContext';
 import PageHeader from '~/components/PageHeader';
 import ListView from '~/components/ListView';
 import CharacterCard from '~/components/CharacterCard';
 
 
-export default function PokemonListPage() {
+export default function DigimonListPage() {
   const navigate = useNavigate();
   const listCache = useListCache();
-  const { setPokemonDetail } = usePokemonDetail();
   const isLoading = useRef<boolean>(false);
 
 
-  const getAndSetPokemons = async (getPokemonsUrl?: string) => {
+  const getAndSetDigimons = async (getDigimonsUrl?: string) => {
     if (isLoading.current) return;
     isLoading.current = true;
 
-    const data = await getPokemons(getPokemonsUrl);
+    const data = await getDigimons(getDigimonsUrl);
 
     if (data) {
-      const newPokemons = await Promise.all(
-        data.results.map(({ url }) => getPokemon(url))
-      );
-
-      listCache.setItems(prevPokemons => [
-        ...prevPokemons,
-        ...newPokemons,
+      listCache.setItems(prevDigimons => [
+        ...prevDigimons,
+        ...data.content,
       ]);
 
-      listCache.nextPageUrl.current = data.next;
+      listCache.nextPageUrl.current = data.pageable.nextPage;
     }
     isLoading.current = false;
   }
@@ -40,20 +34,19 @@ export default function PokemonListPage() {
 
   const nextPageHandler = () => {
     if (!listCache.nextPageUrl.current) return;
-    getAndSetPokemons(listCache.nextPageUrl.current);
+    getAndSetDigimons(listCache.nextPageUrl.current);
   }
 
 
-  const handleCardClick = async (pokemonDetail: PokemonDetail) => {
-    setPokemonDetail(pokemonDetail);
-    navigate(`/pokemon/${pokemonDetail.id}`);
+  const handleCardClick = async (digimonItem: DigimonItem) => {
+    navigate(`/digimon/${digimonItem.id}`);
   }
 
 
   useEffect(() => {
     // 第一次載入頁面
     if (!listCache.items.length) {
-      getAndSetPokemons();
+      getAndSetDigimons();
     }
 
     // 回到上次捲動位置
@@ -72,22 +65,22 @@ export default function PokemonListPage() {
     <div className='relative pt-12'>
       <PageHeader
         textColor='#FFFFFF'
-        backgroundColor='#D53B47'
+        backgroundColor='#2B5DB2'
         prevPageUrl='/'
         prevPageName='Home'
-        pageName='Pokemon'
+        pageName='Digimon'
       />
       <ListView
         nextPageHandler={nextPageHandler}
       >
-        {(listCache.items as Array<PokemonDetail>).map((pokemonDetail, index) => (
+        {(listCache.items as Array<DigimonItem>).map((digimonItem, index) => (
           <CharacterCard
             key={index}
-            name={pokemonDetail.name}
-            thumbnail={pokemonDetail.thumbnail}
-            textColor='#FFFFFF'
-            backgroundColor={pokemonDetail.color}
-            onClick={() => handleCardClick(pokemonDetail)}
+            name={digimonItem.name}
+            thumbnail={digimonItem.image}
+            textColor='#000000'
+            backgroundColor='#FFFFFF'
+            onClick={() => handleCardClick(digimonItem)}
           />
         ))}
       </ListView>

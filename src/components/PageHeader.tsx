@@ -3,7 +3,8 @@ import { FaArrowLeft } from 'react-icons/fa6';
 
 
 interface PageHeaderProps {
-  backgroundColor?: string;
+  textColor: string;
+  backgroundColor: string;
   prevPageUrl: string;
   prevPageName: string;
   pageName: string;
@@ -15,7 +16,8 @@ export default function PageHeader(props: PageHeaderProps) {
     <header
       className='fixed top-0 right-0 left-0'
       style={{
-        backgroundColor: props.backgroundColor || 'transparent',
+        color: props.textColor,
+        backgroundColor: props.backgroundColor,
       }}
     >
       <div

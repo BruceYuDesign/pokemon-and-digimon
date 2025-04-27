@@ -2,12 +2,13 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import PageHeader from '~/components/PageHeader';
 import ProgressBar from '~/components/ProgressBar';
-import { useCharacterDetail } from '~/context/CharacterDetailContext';
-import { typeColors, getPokemon } from '~/services/pokemonServices';
+import { usePokemonDetail } from '~/context/pokemonDetailContext';
+import { getPokemon } from '~/services/pokemonService';
+import { pokemonTypeColors } from '~/libs/theme';
 
 
 export default function PokemonDetailPage() {
-  const { characterDetail, setCharacterDetail } = useCharacterDetail();
+  const { pokemonDetail, setPokemonDetail } = usePokemonDetail();
   const { pokemonId } = useParams<{ pokemonId: string }>();
 
 
@@ -17,10 +18,10 @@ export default function PokemonDetailPage() {
 
     // 第一次載入應用程式時，取得角色詳細資料
     const getAndSetPokemonDetail = async () => {
-      const characterDetail = await getPokemon(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`);
-      setCharacterDetail(characterDetail);
+      const pokemonDetail = await getPokemon(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`);
+      setPokemonDetail(pokemonDetail);
     }
-    if (!characterDetail) {
+    if (!pokemonDetail) {
       getAndSetPokemonDetail();
     }
   }, []);
@@ -29,6 +30,8 @@ export default function PokemonDetailPage() {
   return (
     <>
       <PageHeader
+        textColor='#FFFFFF'
+        backgroundColor='transparent'
         prevPageUrl='/pokemon'
         prevPageName='Pokemon'
         pageName={`#${pokemonId?.padStart(4, '0')}`}
@@ -37,15 +40,15 @@ export default function PokemonDetailPage() {
       <div
         className='flex items-center justify-center h-[280px] rounded-b-4xl'
         style={{
-          backgroundColor: characterDetail?.color || '#3A393B',
+          backgroundColor: pokemonDetail?.color || '#3A393B',
         }}
       >
         {
-          characterDetail?.thumbnail && (
+          pokemonDetail?.thumbnail && (
             <img
               className='h-2/3 w-auto'
-              src={characterDetail?.thumbnail || ''}
-              alt={characterDetail?.name || 'Unknown'}
+              src={pokemonDetail?.thumbnail || ''}
+              alt={pokemonDetail?.name || 'Unknown'}
             />
           )
         }
@@ -53,18 +56,18 @@ export default function PokemonDetailPage() {
       {/* 角色資訊 */}
       <div className='flex flex-col items-center gap-6 p-6'>
         {/* 名稱 */}
-        <h2 className='text-3xl'>
-          {characterDetail?.name || 'Unknown'}
-        </h2>
+        <h1 className='text-3xl'>
+          {pokemonDetail?.name || 'Unknown'}
+        </h1>
         {/* 屬性 */}
-        <div className='flex flex-row gap-4'>
+        <div className='flex flex-row gap-4 flex-wrap'>
           {
-            characterDetail?.types?.map(type => (
+            pokemonDetail?.types?.map(type => (
               <span
                 key={type}
-                className='w-28 h-6 flex items-center justify-center rounded-full'
+                className='px-3 min-w-28 h-6 flex items-center justify-center rounded-full'
                 style={{
-                  backgroundColor: typeColors[type],
+                  backgroundColor: pokemonTypeColors[type],
                 }}
               >
                 {type}
@@ -77,7 +80,7 @@ export default function PokemonDetailPage() {
           {/* 體重 */}
           <div className='w-32 flex flex-col items-center gap-2'>
             <p className='text-xl'>
-              {characterDetail?.weight ? characterDetail.weight / 10 : 0} KG
+              {pokemonDetail?.weight ? pokemonDetail.weight / 10 : 0} KG
             </p>
             <span className='text-sm opacity-50'>
               Weight
@@ -86,7 +89,7 @@ export default function PokemonDetailPage() {
           {/* 身高 */}
           <div className='w-32 flex flex-col items-center gap-2'>
             <p className='text-xl'>
-              {characterDetail?.height ? characterDetail.height / 10 : 0} M
+              {pokemonDetail?.height ? pokemonDetail.height / 10 : 0} M
             </p>
             <span className='text-sm opacity-50'>
               Height
@@ -94,42 +97,42 @@ export default function PokemonDetailPage() {
           </div>
         </div>
         {/* 數值 */}
-        <h3 className='text-xl'>
+        <h2 className='text-xl'>
           Base Stats
-        </h3>
+        </h2>
         <div className='w-full flex flex-col items-center gap-4'>
           {/* 生命值 */}
           <ProgressBar
             label='HP'
-            value={characterDetail?.hp || 0}
+            value={pokemonDetail?.hp || 0}
             maxValue={255}
             progressColor='#D63843'
           />
           {/* 攻擊力 */}
           <ProgressBar
             label='ATK'
-            value={characterDetail?.attack || 0}
+            value={pokemonDetail?.attack || 0}
             maxValue={190}
             progressColor='#FEA726'
           />
           {/* 防禦力 */}
           <ProgressBar
             label='DEF'
-            value={characterDetail?.defense || 0}
+            value={pokemonDetail?.defense || 0}
             maxValue={250}
             progressColor='#0091EA'
           />
           {/* 速度 */}
           <ProgressBar
             label='SPD'
-            value={characterDetail?.speed || 0}
+            value={pokemonDetail?.speed || 0}
             maxValue={200}
             progressColor='#8EB0C4'
           />
           {/* 經驗值 */}
           <ProgressBar
             label='EXP'
-            value={characterDetail?.exp || 0}
+            value={pokemonDetail?.exp || 0}
             maxValue={635}
             progressColor='#388D3E'
           />

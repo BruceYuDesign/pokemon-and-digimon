@@ -5,8 +5,8 @@ import { createContext, useContext, useState, useRef } from 'react';
 interface ListCacheContext {
   nextPageUrl: RefObject<string>;
   scrollY: RefObject<number>;
-  items: Array<any>;
-  setItems: (newItems: SetStateAction<Array<any>>) => void;
+  items: Array<unknown>;
+  setItems: (newItems: SetStateAction<Array<unknown>>) => void;
 }
 
 
