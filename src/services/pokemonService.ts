@@ -1,4 +1,4 @@
-import type { Pokemon } from '@bgoff1/pokeapi-types';
+import type { Pokemon as OriginPokemon } from '@bgoff1/pokeapi-types';
 import { requestHandler } from '~/libs/requestHandler';
 import { pokemonTypeColors } from '~/libs/theme';
 
@@ -14,8 +14,8 @@ interface Pokemons {
 }
 
 
-interface PokemonWithArtwork extends Pokemon {
-  sprites: Pokemon['sprites'] & {
+interface Pokemon extends OriginPokemon {
+  sprites: OriginPokemon['sprites'] & {
     other?: {
       ['official-artwork']?: {
         front_default?: string;
@@ -60,7 +60,7 @@ export async function getPokemons(url?: string): Promise<Pokemons> {
 
 
 export async function getPokemon(url: string): Promise<PokemonDetail> {
-  const data: PokemonWithArtwork = await requestHandler({ url });
+  const data: Pokemon = await requestHandler({ url });
 
   // 取出需要的資料
   const { hp, attack, defense, speed } = data.stats.reduce(
