@@ -3,10 +3,28 @@ interface ProgressBarProps {
   value?: number;
   maxValue: number;
   progressColor: string;
+  isLoading?: boolean;
 }
 
 
 export default function ProgressBar(props: ProgressBarProps) {
+
+
+  if (props.isLoading) {
+    return (
+      <div className='w-full flex flex-row justify-start items-center'>
+        <span className='w-12 opacity-50 text-sm'>
+          {props.label}
+        </span>
+        <div
+          className='util-skeleton
+          w-full h-6 rounded-full'
+        ></div>
+      </div>
+    );
+  }
+
+
   return (
     <div className='w-full flex flex-row justify-start items-center'>
       {/* 標籤 */}

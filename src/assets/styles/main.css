@@ -12,4 +12,8 @@
   .util-container {
     @apply max-w-screen-lg w-full mx-auto;
   }
+
+  .util-skeleton {
+    @apply bg-[#3A393B] animate-pulse;
+  }
 }

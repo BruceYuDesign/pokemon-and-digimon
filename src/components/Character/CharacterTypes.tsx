@@ -1,10 +1,23 @@
 interface CharacterTypesProps {
   types?: Array<string>;
   typeColors: Record<string, string>;
+  isLoading?: boolean;
 }
 
 
 export default function CharacterTypes(props: CharacterTypesProps) {
+
+
+  if (props.isLoading) {
+    return (
+      <div
+        className='util-skeleton
+        h-6 w-28 rounded-full'
+      ></div>
+    );
+  }
+
+
   return (
     <div className='flex flex-row gap-4 flex-wrap'>
       {

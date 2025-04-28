@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import PageHeader from '~/components/PageHeader';
 import CharacterThumbnail from '~/components/Character/CharacterThumbnail';
@@ -12,6 +12,7 @@ import { pokemonTypeColors } from '~/libs/theme';
 
 
 export default function PokemonDetailPage() {
+  const [isLoading, setIsLoading] = useState(true);
   const { pokemonDetail, setPokemonDetail } = usePokemonDetail();
   const { pokemonId } = useParams<{ pokemonId: string }>();
 
@@ -21,8 +22,12 @@ export default function PokemonDetailPage() {
     const getAndSetPokemonDetail = async () => {
       const pokemonDetail = await getPokemon(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`);
       setPokemonDetail(pokemonDetail);
+      setIsLoading(false);
     }
-    if (!pokemonDetail) {
+
+    if (pokemonDetail) {
+      setIsLoading(false);
+    } else {
       getAndSetPokemonDetail();
     }
 
@@ -45,17 +50,20 @@ export default function PokemonDetailPage() {
         image={pokemonDetail?.thumbnail}
         backgroundColor={pokemonDetail?.color}
         alt={pokemonDetail?.name}
+        isLoading={isLoading}
       />
       {/* 角色資訊 */}
       <div className='flex flex-col items-center gap-6 p-6'>
         {/* 名稱 */}
         <CharacterName
           name={pokemonDetail?.name}
+          isLoading={isLoading}
         />
         {/* 屬性 */}
         <CharacterTypes
           types={pokemonDetail?.types}
           typeColors={pokemonTypeColors}
+          isLoading={isLoading}
         />
         {/* 大小 */}
         <div className='w-full flex flex-row justify-around items-start'>
@@ -64,12 +72,14 @@ export default function PokemonDetailPage() {
             label='Weight'
             unit='KG'
             value={pokemonDetail?.weight ? pokemonDetail.weight / 10 : 0}
+            isLoading={isLoading}
           />
           {/* 身高 */}
           <CharacterValueLabel
             label='Height'
             unit='M'
             value={pokemonDetail?.height ? pokemonDetail.height / 10 : 0}
+            isLoading={isLoading}
           />
         </div>
         {/* 數值 */}
@@ -83,6 +93,7 @@ export default function PokemonDetailPage() {
             value={pokemonDetail?.hp}
             maxValue={255}
             progressColor='#D63843'
+            isLoading={isLoading}
           />
           {/* 攻擊力 */}
           <CharacterProgressBar
@@ -90,6 +101,7 @@ export default function PokemonDetailPage() {
             value={pokemonDetail?.attack}
             maxValue={190}
             progressColor='#FEA726'
+            isLoading={isLoading}
           />
           {/* 防禦力 */}
           <CharacterProgressBar
@@ -97,6 +109,7 @@ export default function PokemonDetailPage() {
             value={pokemonDetail?.defense}
             maxValue={250}
             progressColor='#0091EA'
+            isLoading={isLoading}
           />
           {/* 速度 */}
           <CharacterProgressBar
@@ -104,6 +117,7 @@ export default function PokemonDetailPage() {
             value={pokemonDetail?.speed}
             maxValue={200}
             progressColor='#8EB0C4'
+            isLoading={isLoading}
           />
           {/* 經驗值 */}
           <CharacterProgressBar
@@ -111,6 +125,7 @@ export default function PokemonDetailPage() {
             value={pokemonDetail?.exp}
             maxValue={635}
             progressColor='#388D3E'
+            isLoading={isLoading}
           />
         </div>
       </div>

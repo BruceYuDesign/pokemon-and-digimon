@@ -3,6 +3,7 @@ import { FaQuestion } from 'react-icons/fa';
 
 
 interface CharacterThumbnailProps {
+  isLoading?: boolean;
   image?: string;
   backgroundColor?: string;
   alt?: string;
@@ -16,6 +17,16 @@ export default function CharacterThumbnail(props: CharacterThumbnailProps) {
   const imageOnError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
     event.currentTarget.onerror = null;
     setIsError(true);
+  }
+
+
+  if (props.isLoading) {
+    return (
+      <div
+        className='util-skeleton
+        h-[280px] rounded-b-4xl'
+      ></div>
+    );
   }
 
 

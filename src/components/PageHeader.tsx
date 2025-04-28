@@ -14,7 +14,7 @@ interface PageHeaderProps {
 export default function PageHeader(props: PageHeaderProps) {
   return (
     <header
-      className='fixed top-0 right-0 left-0'
+      className='fixed top-0 right-0 left-0 z-10'
       style={{
         color: props.textColor,
         backgroundColor: props.backgroundColor,

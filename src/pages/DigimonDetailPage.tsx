@@ -11,6 +11,7 @@ import { digimonTypeColors } from '~/libs/theme';
 
 
 export default function DigimonDetailPage() {
+  const [isLoading, setIsLoading] = useState(true);
   const [digimonDetail, setDigimonDetail] = useState<DigimonDetail | null>(null);
   const { digimonId } = useParams<{ digimonId: string }>();
 
@@ -20,6 +21,7 @@ export default function DigimonDetailPage() {
     const getAndSetDigimonDetail = async () => {
       const digimonDetail = await getDigimon(`https://digi-api.com/api/v1/digimon/${digimonId}`);
       setDigimonDetail(digimonDetail);
+      setIsLoading(false);
     }
     getAndSetDigimonDetail();
 
@@ -42,21 +44,25 @@ export default function DigimonDetailPage() {
         image={digimonDetail?.thumbnail}
         backgroundColor='#FFFFFF'
         alt={digimonDetail?.name}
+        isLoading={isLoading}
       />
       {/* 角色資訊 */}
       <div className='flex flex-col items-center gap-6 p-6'>
         {/* 名稱 */}
         <CharacterName
           name={digimonDetail?.name}
+          isLoading={isLoading}
         />
         {/* 屬性 */}
         <CharacterTypes
           types={digimonDetail?.types}
           typeColors={digimonTypeColors}
+          isLoading={isLoading}
         />
         {/* 描述 */}
         <CharacterDescription
           description={digimonDetail?.description}
+          isLoading={isLoading}
         />
       </div>
     </>
