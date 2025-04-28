@@ -32,13 +32,13 @@ export default function CharacterCard(props: CharacterCardProps) {
               backgroundColor: props.backgroundColor,
             }}
           >
-            <div className='h-3/4 flex items-center justify-center'>
+            <div className='h-[calc(100%-2.5rem)] flex items-center justify-center'>
               {
                 props.thumbnail && (
                   <img
-                    className='h-full object-contain'
+                    className='h-full w-auto object-contain pointer-events-none'
                     src={props.thumbnail}
-                    alt={props.name || '未知'}
+                    alt={props.name || 'Unknown'}
                   />
                 )
               }
@@ -49,7 +49,7 @@ export default function CharacterCard(props: CharacterCardProps) {
                 color: props.textColor,
               }}
             >
-              {props.name || '未知'}
+              {props.name || 'Unknown'}
             </h3>
           </div>
         )

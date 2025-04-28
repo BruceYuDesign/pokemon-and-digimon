@@ -42,7 +42,7 @@ export default function CharacterThumbnail(props: CharacterThumbnailProps) {
       {
         (props.image && !isError) ? (
           <img
-            className='h-2/3 w-auto'
+            className='h-2/3 w-auto pointer-events-none'
             src={props.image}
             alt={props.alt || 'Unknown'}
             onError={imageOnError}

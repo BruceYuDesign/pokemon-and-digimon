@@ -18,7 +18,7 @@ export default function CharacterName(props: CharacterNameProps) {
 
 
   return (
-    <h1 className='text-3xl'>
+    <h1 className='text-3xl text-center'>
       {props.name || 'Unknown'}
     </h1>
   );
