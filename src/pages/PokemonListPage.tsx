@@ -6,7 +6,7 @@ import { useListCache } from '~/context/ListCacheContext';
 import { usePokemonDetail } from '~/context/pokemonDetailContext';
 import PageHeader from '~/components/PageHeader';
 import ListView from '~/components/ListView';
-import CharacterCard from '~/components/CharacterCard';
+import CharacterCard from '~/components/Character/CharacterCard';
 
 
 export default function PokemonListPage() {

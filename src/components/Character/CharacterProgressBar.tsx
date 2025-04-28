@@ -1,6 +1,6 @@
 interface ProgressBarProps {
   label: string;
-  value: number;
+  value?: number;
   maxValue: number;
   progressColor: string;
 }
@@ -18,23 +18,23 @@ export default function ProgressBar(props: ProgressBarProps) {
         <div
           className='px-2 flex flex-row justify-start items-center rounded-full'
           style={{
-            width: `${props.value / props.maxValue * 100}%`,
+            width: `${(props.value || 0) / props.maxValue * 100}%`,
           }}
         >
           <span className='ml-auto text-black text-sm'>
-            {props.value}/{props.maxValue}
+            {props.value || 0}/{props.maxValue}
           </span>
         </div>
         {/* 進度條 有色底 白字 */}
         <div
           className='absolute left-0 top-0 bottom-0 px-2 flex flex-row justify-start items-center rounded-full overflow-hidden'
           style={{
-            width: `${props.value / props.maxValue * 100}%`,
+            width: `${(props.value || 0) / props.maxValue * 100}%`,
             backgroundColor: props.progressColor,
           }}
         >
           <span className='ml-auto text-sm'>
-            {props.value}/{props.maxValue}
+            {props.value || 0}/{props.maxValue}
           </span>
         </div>
       </div>
