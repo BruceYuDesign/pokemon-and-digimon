@@ -1,4 +1,6 @@
 import { Outlet } from 'react-router-dom';
+import { ToastContainer } from 'material-react-toastify';
+import 'material-react-toastify/dist/ReactToastify.css';
 
 
 export default function BasicLayout() {
@@ -8,7 +10,10 @@ export default function BasicLayout() {
         className='util-container
         flex flex-col'
       >
-        <Outlet />
+        <Outlet/>
+        <ToastContainer
+          position='top-center'
+        />
       </div>
     </div>
   )

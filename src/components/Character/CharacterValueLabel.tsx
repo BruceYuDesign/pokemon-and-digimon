@@ -14,7 +14,7 @@ export default function CharacterValueLabel(props: ValueLabelProps) {
       <div className='w-32 flex flex-col items-center gap-2'>
         <div
           className='util-skeleton
-          h-7 w-14'
+          rounded h-7 w-14'
         ></div>
         <span className='text-sm opacity-50'>
           {props.label}

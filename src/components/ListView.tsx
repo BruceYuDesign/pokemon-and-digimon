@@ -1,10 +1,13 @@
 import { useRef, useEffect } from 'react';
 import { BiLoader } from 'react-icons/bi';
+import ErrorRetryButton from '~/components/ErrorRetryButton';
 
 
 interface ListViewProps {
   children: React.ReactNode;
   nextPageHandler: () => void;
+  isLoading: boolean;
+  hasError: boolean;
 }
 
 
@@ -13,20 +16,20 @@ export default function ListView(props: ListViewProps) {
 
 
   useEffect(() => {
-    if (!nextPageElement.current) return;
-
     const observer = new IntersectionObserver(([{ isIntersecting }]) => {
-      if (!isIntersecting) return;
-      props.nextPageHandler();
+      if (isIntersecting && !props.isLoading && !props.hasError) {
+        props.nextPageHandler();
+      }
     }, { threshold: 0.5 });
 
-    observer.observe(nextPageElement.current);
+    if (nextPageElement.current) {
+      observer.observe(nextPageElement.current);
+    }
 
     return () => observer.disconnect();
-  }, []);
+  }, [props.isLoading, props.hasError]);
 
 
-  // TODO 在入完不要顯示 Spinner
   return (
     <>
       <div
@@ -36,12 +39,23 @@ export default function ListView(props: ListViewProps) {
         {props.children}
       </div>
       <div
-        className='h-16 flex items-center justify-center'
+        className='h-20 flex items-center justify-center'
         ref={nextPageElement}
       >
-        <BiLoader
-          className='w-8 h-8 mx-auto opacity-50 animate-spin'
-        />
+        {
+          props.isLoading && (
+            <BiLoader
+              className='w-8 h-8 mx-auto opacity-50 animate-spin'
+            />
+          )
+        }
+        {
+          (props.hasError && !props.isLoading) && (
+            <ErrorRetryButton
+              retryHandler={props.nextPageHandler}
+            />
+          )
+        }
       </div>
     </>
   );

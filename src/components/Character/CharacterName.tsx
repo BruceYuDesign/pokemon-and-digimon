@@ -11,7 +11,7 @@ export default function CharacterName(props: CharacterNameProps) {
     return (
       <div
         className='util-skeleton
-        w-32 h-9'
+        rounded w-32 h-9'
       ></div>
     );
   }

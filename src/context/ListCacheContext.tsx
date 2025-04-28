@@ -26,7 +26,7 @@ const listCacheContext = createContext<ListCacheContext>({
 export function ListCacheProvider(props: ListCacheProviderProps) {
   const nextPageUrl = useRef<string>('');
   const scrollY = useRef<number>(0);
-  const [items, setItems] = useState<Array<any>>([]);
+  const [items, setItems] = useState<Array<unknown>>([]);
 
   return (
     <listCacheContext.Provider

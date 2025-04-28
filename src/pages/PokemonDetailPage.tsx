@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import PageHeader from '~/components/PageHeader';
 import CharacterThumbnail from '~/components/Character/CharacterThumbnail';
@@ -6,37 +6,43 @@ import CharacterName from '~/components/Character/CharacterName';
 import CharacterTypes from '~/components/Character/CharacterTypes';
 import CharacterValueLabel from '~/components/Character/CharacterValueLabel';
 import CharacterProgressBar from '~/components/Character/CharacterProgressBar';
+import ErrorRetryButton from '~/components/ErrorRetryButton';
 import { usePokemonDetail } from '~/context/pokemonDetailContext';
-import { getPokemon } from '~/services/pokemonService';
+import { getPokemonById } from '~/services/pokemonService';
 import { pokemonTypeColors } from '~/libs/theme';
 
 
 export default function PokemonDetailPage() {
   const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
   const { pokemonDetail, setPokemonDetail } = usePokemonDetail();
   const { pokemonId } = useParams<{ pokemonId: string }>();
 
 
-  useEffect(() => {
-    // 第一次載入應用程式時，取得角色詳細資料
-    const getAndSetPokemonDetail = async () => {
-      const pokemonDetail = await getPokemon(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`);
+  const getAndSetPokemonDetail = useCallback(async () => {
+    setIsLoading(true);
+    try{
+      const pokemonDetail = await getPokemonById(pokemonId as string);
       setPokemonDetail(pokemonDetail);
+      setHasError(false);
+    } catch {
+      setHasError(true);
+    } finally {
       setIsLoading(false);
     }
+  }, [pokemonId]);
 
+
+  useEffect(() => {
     if (pokemonDetail) {
       setIsLoading(false);
     } else {
       getAndSetPokemonDetail();
     }
-
-    // 捲動至頂部
-    window.scrollTo(0, 0);
   }, []);
 
 
-  return (
+  const pageContent = () => (
     <>
       <PageHeader
         textColor='#FFFFFF'
@@ -129,6 +135,33 @@ export default function PokemonDetailPage() {
           />
         </div>
       </div>
+    </>
+  );
+
+
+  const errorContent = () => (
+    <div className='min-h-dvh w-dvw flex flex-col items-center justify-center'>
+      <ErrorRetryButton
+        retryHandler={getAndSetPokemonDetail}
+      />
+    </div>
+  );
+
+
+  return (
+    <>
+      <PageHeader
+        textColor='#FFFFFF'
+        backgroundColor='transparent'
+        prevPageUrl='/pokemon'
+        prevPageName='Pokemon'
+        pageName={`#${pokemonId?.padStart(5, '0')}`}
+      />
+      {
+        (!isLoading && hasError)
+          ? errorContent()
+          : pageContent()
+      }
     </>
   );
 }

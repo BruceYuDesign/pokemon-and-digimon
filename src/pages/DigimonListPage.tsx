@@ -1,5 +1,5 @@
 import type { DigimonItem } from '~/services/digimonService';
-import { useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getDigimons } from '~/services/digimonService';
 import { useListCache } from '~/context/ListCacheContext';
@@ -11,24 +11,29 @@ import CharacterCard from '~/components/Character/CharacterCard';
 export default function DigimonListPage() {
   const navigate = useNavigate();
   const listCache = useListCache();
-  const isLoading = useRef<boolean>(false);
+  const lockedRequest = useRef<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [hasError, setHasError] = useState<boolean>(false);
 
 
   const getAndSetDigimons = async (getDigimonsUrl?: string) => {
-    if (isLoading.current) return;
-    isLoading.current = true;
-
-    const data = await getDigimons(getDigimonsUrl);
-
-    if (data) {
+    if (lockedRequest.current) return;
+    lockedRequest.current = true;
+    setIsLoading(true);
+    try {
+      const data = await getDigimons(getDigimonsUrl);
       listCache.setItems(prevDigimons => [
         ...prevDigimons,
         ...data.content,
       ]);
-
       listCache.nextPageUrl.current = data.pageable.nextPage;
+      setHasError(false);
+    } catch {
+      setHasError(true);
+    } finally {
+      lockedRequest.current = false;
+      setIsLoading(false);
     }
-    isLoading.current = false;
   }
 
 
@@ -72,6 +77,8 @@ export default function DigimonListPage() {
       />
       <ListView
         nextPageHandler={nextPageHandler}
+        isLoading={isLoading}
+        hasError={hasError}
       >
         {(listCache.items as Array<DigimonItem>).map((digimonItem, index) => (
           <CharacterCard

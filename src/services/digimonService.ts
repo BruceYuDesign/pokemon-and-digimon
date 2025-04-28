@@ -85,19 +85,19 @@ export interface DigimonDetail {
 }
 
 
-const defaultUrl = 'https://digi-api.com/api/v1/digimon?page=0&pageSize=18';
+const baseUrl = 'https://digi-api.com/api/v1/digimon';
 
 
 export async function getDigimons(url?: string): Promise<Digimons> {
   const data: Digimons = await requestHandler({
-    url: url || defaultUrl,
+    url: url || `${baseUrl}?page=0&pageSize=18`,
   });
 
   return data;
 }
 
 
-export async function getDigimon(url: string): Promise<DigimonDetail> {
+export async function getDigimonByUrl(url: string): Promise<DigimonDetail> {
   const data: Digimon = await requestHandler({ url });
 
   return {
@@ -107,4 +107,10 @@ export async function getDigimon(url: string): Promise<DigimonDetail> {
     types: data.types.map(({ type }) => type),
     description: data.descriptions.find(({ language }) => language === 'en_us')?.description || '',
   }
+}
+
+
+export async function getDigimonById(id: string): Promise<DigimonDetail> {
+  const requestUrl = `${baseUrl}/${id}`;
+  return await getDigimonByUrl(requestUrl);
 }

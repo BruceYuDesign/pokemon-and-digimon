@@ -12,27 +12,27 @@ export default function CharacterDescription(props: CharacterDescriptionProps) {
       <div className='w-full flex flex-col gap-4.5'>
         <div
           className='util-skeleton
-          w-full h-4.5'
+          rounded w-full h-4.5'
         ></div>
         <div
           className='util-skeleton
-          w-full h-4.5'
+          rounded w-full h-4.5'
         ></div>
         <div
           className='util-skeleton
-          w-full h-4.5'
+          rounded w-full h-4.5'
         ></div>
         <div
           className='util-skeleton
-          w-full h-4.5'
+          rounded w-full h-4.5'
         ></div>
         <div
           className='util-skeleton
-          w-full h-4.5'
+          rounded w-full h-4.5'
         ></div>
         <div
           className='util-skeleton
-          w-2/3 h-4.5'
+          rounded w-2/3 h-4.5'
         ></div>
       </div>
     );

@@ -47,19 +47,19 @@ type StatName = 'hp' | 'attack' | 'defense' | 'speed';
 const statNames = ['hp', 'attack', 'defense', 'speed'];
 
 
-const defaultUrl = 'https://pokeapi.co/api/v2/pokemon?limit=18';
+const baseUrl = 'https://pokeapi.co/api/v2/pokemon';
 
 
 export async function getPokemons(url?: string): Promise<Pokemons> {
   const data = await requestHandler({
-    url: url || defaultUrl,
+    url: url || `${baseUrl}?limit=18`,
   });
 
   return data;
 }
 
 
-export async function getPokemon(url: string): Promise<PokemonDetail> {
+export async function getPokemonByUrl(url: string): Promise<PokemonDetail> {
   const data: Pokemon = await requestHandler({ url });
 
   // 取出需要的資料
@@ -87,4 +87,10 @@ export async function getPokemon(url: string): Promise<PokemonDetail> {
     exp: data.base_experience,
     color: pokemonTypeColors[data.types[0].type.name],
   }
+}
+
+
+export async function getPokemonById(id: string): Promise<PokemonDetail> {
+  const requestUrl = `${baseUrl}/${id}`;
+  return await getPokemonByUrl(requestUrl);
 }
