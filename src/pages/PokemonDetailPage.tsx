@@ -46,7 +46,7 @@ export default function PokemonDetailPage() {
     <>
       <PageHeader
         textColor='#FFFFFF'
-        backgroundColor='transparent'
+        backgroundColor={pokemonDetail?.color || 'transparent'}
         prevPageUrl='/pokemon'
         prevPageName='Pokemon'
         pageName={`#${pokemonId?.padStart(5, '0')}`}

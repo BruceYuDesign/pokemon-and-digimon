@@ -12,8 +12,11 @@ export default function BasicLayout() {
         <Outlet/>
         <ToastContainer
           position='top-center'
+          theme='colored'
+          limit={1}
+          autoClose={3000}
         />
       </div>
     </div>
-  )
+  );
 }

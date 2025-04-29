@@ -82,7 +82,7 @@ export default function DigimonDetailPage() {
     <>
       <PageHeader
         textColor='#000000'
-        backgroundColor='transparent'
+        backgroundColor='#FFFFFF'
         prevPageUrl='/digimon'
         prevPageName='Digimon'
         pageName={`#${digimonId?.padStart(5, '0')}`}

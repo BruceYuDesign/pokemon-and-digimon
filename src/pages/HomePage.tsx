@@ -5,13 +5,13 @@ import DigimonCoverImage from '~/assets/images/digimon-cover.png';
 
 const pageLinks = [
   {
-    to: '/pokemon',
+    href: '/pokemon',
     label: 'Pokemon',
     image: PokemonCoverImage,
     backgroundColor: '#D53B47',
   },
   {
-    to: '/digimon',
+    href: '/digimon',
     label: 'Digimon',
     image: DigimonCoverImage,
     backgroundColor: '#2B5DB2',
@@ -26,23 +26,24 @@ export default function HomePage() {
       sm:grid-cols-2'
     >
       {
-        pageLinks.map(({ to, label, image, backgroundColor }) => (
+        pageLinks.map(pageLink => (
           <Link
-            className='p-12 flex flex-col items-center justify-between aspect-square rounded-4xl'
-            key={label}
+            className='px-12 flex flex-col items-center justify-between aspect-square rounded-4xl'
+            key={pageLink.label}
             style={{
-              backgroundColor,
+              backgroundColor: pageLink.backgroundColor,
             }}
-            to={to}
+            to={pageLink.href}
           >
-            <div
-              className='h-3/4 w-full bg-no-repeat bg-center bg-contain'
-              style={{
-                backgroundImage: `url(${image})`,
-              }}
-            ></div>
-            <h2 className='text-3xl'>
-              {label}
+            <div className='h-3/4 w-full flex items-center justify-center'>
+              <img
+                className='h-3/4 w-auto object-contain pointer-events-none'
+                src={pageLink.image}
+                alt={pageLink.label}
+              />
+            </div>
+            <h2 className='h-1/4 text-3xl flex items-center justify-center'>
+              {pageLink.label}
             </h2>
           </Link>
         ))

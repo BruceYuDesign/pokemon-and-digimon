@@ -37,17 +37,17 @@ export default function CharacterCard(props: CharacterCardProps) {
       {
         inView && (
           <div
-            className='flex flex-col items-stretch justify-between p-4 aspect-square rounded-2xl overflow-hidden cursor-pointer'
+            className='flex flex-col items-stretch px-4 justify-between aspect-square rounded-2xl overflow-hidden cursor-pointer'
             onClick={props.onClick}
             style={{
               backgroundColor: props.backgroundColor,
             }}
           >
-            <div className='h-[calc(100%-2.5rem)] flex items-center justify-center'>
+            <div className='h-3/4 flex items-center justify-center'>
               {
                 (props.thumbnail && !isError) ? (
                   <img
-                    className='h-full w-auto object-contain pointer-events-none'
+                    className='h-3/4 w-auto object-contain pointer-events-none'
                     src={props.thumbnail}
                     alt={props.name || 'Unknown'}
                     onError={imageOnError}
@@ -60,7 +60,7 @@ export default function CharacterCard(props: CharacterCardProps) {
               }
             </div>
             <h3
-              className='h-8 shrink-0 text-center text-xl whitespace-nowrap text-ellipsis overflow-hidden'
+              className='h-1/4 shrink-0 text-center text-xl whitespace-nowrap text-ellipsis overflow-hidden'
               style={{
                 color: props.textColor,
               }}

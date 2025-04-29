@@ -15,14 +15,15 @@ export default function PageHeader(props: PageHeaderProps) {
   return (
     <header
       className='fixed top-0 right-0 left-0 z-10'
-      style={{
-        color: props.textColor,
-        backgroundColor: props.backgroundColor,
-      }}
     >
       <div
         className='util-container
-        h-12 px-4 flex flex-row items-center justify-between'
+        h-12 px-4 flex flex-row items-center justify-between
+        lg:rounded-b-2xl'
+        style={{
+          color: props.textColor,
+          backgroundColor: props.backgroundColor,
+        }}
       >
         <Link
           className='flex flex-row items-center gap-4 text-lg'
