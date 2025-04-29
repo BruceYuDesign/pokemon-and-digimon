@@ -55,7 +55,7 @@ export default function DigimonDetailPage() {
       textColor: digimonDetail ? '#000000' : '#FFFFFF',
       backgroundColor: digimonDetail ? '#FFFFFF' : 'transparent',
       prevPageUrl: '/digimon',
-      prevPageName: 'Dokemon',
+      prevPageName: 'Digimon',
       pageName: `#${digimonId?.padStart(5, '0')}`,
     });
   }, [digimonDetail]);
