@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getPokemons, getPokemonByUrl } from '~/services/pokemonService';
 import { useListCache } from '~/context/ListCacheContext';
-import { usePokemonDetail } from '~/context/DetailContext';
+import { usePokemonDetail } from '~/context/PokemonDetailContext';
 import PageHeader from '~/components/PageHeader';
 import ListView from '~/components/ListView';
 import CharacterCard from '~/components/CharacterCard';

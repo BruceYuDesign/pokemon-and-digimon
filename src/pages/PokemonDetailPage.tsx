@@ -7,7 +7,7 @@ import DetailTypes from '~/components/Detail/DetailTypes';
 import DetailValueLabel from '~/components/Detail/DetailValueLabel';
 import DetailProgressBar from '~/components/Detail/DetailProgressBar';
 import ErrorRetryButton from '~/components/ErrorRetryButton';
-import { usePokemonDetail } from '~/context/DetailContext';
+import { usePokemonDetail } from '~/context/PokemonDetailContext';
 import { getPokemonById } from '~/services/pokemonService';
 import { pokemonTypeColors } from '~/libs/theme';
 
