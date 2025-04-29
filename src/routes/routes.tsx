@@ -11,14 +11,14 @@ import DigimonDetailPage from '~/pages/DigimonDetailPage';
 
 // 頁面路由
 export const routes: Array<RouteObject> = [
+  // 首頁
+  {
+    path: '/',
+    element: <HomePage/>,
+  },
   {
     element: <BasicLayout/>,
     children: [
-      // 首頁
-      {
-        path: '/',
-        element: <HomePage/>,
-      },
       // Pokemon
       {
         element: <PokemonLayout/>,

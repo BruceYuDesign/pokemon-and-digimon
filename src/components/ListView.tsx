@@ -53,12 +53,12 @@ export default function ListView(props: ListViewProps) {
     <>
       {/* 清單 */}
       <div
-        className='p-4 grid grid-cols-2 gap-4 auto-rows-max
+        className='mt-header p-4 grid grid-cols-2 gap-4 auto-rows-max
         md:grid-cols-3'
       >
         {props.children}
       </div>
-      {/* 下一頁 */}
+      {/* 下一頁容器 */}
       <div
         className='h-20 flex items-center justify-center'
         ref={nextPageElement}

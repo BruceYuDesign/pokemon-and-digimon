@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa6';
 
 
-interface PageHeaderProps {
+export interface PageHeaderProps {
   /**
    * 文字顏色
    */
