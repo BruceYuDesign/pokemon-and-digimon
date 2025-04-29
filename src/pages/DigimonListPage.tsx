@@ -5,7 +5,7 @@ import { getDigimons } from '~/services/digimonService';
 import { useListCache } from '~/context/ListCacheContext';
 import PageHeader from '~/components/PageHeader';
 import ListView from '~/components/ListView';
-import CharacterCard from '~/components/Character/CharacterCard';
+import CharacterCard from '~/components/CharacterCard';
 
 
 export default function DigimonListPage() {

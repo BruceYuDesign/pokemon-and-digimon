@@ -3,10 +3,10 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getPokemons, getPokemonByUrl } from '~/services/pokemonService';
 import { useListCache } from '~/context/ListCacheContext';
-import { usePokemonDetail } from '~/context/pokemonDetailContext';
+import { usePokemonDetail } from '~/context/PokemonDetailContext';
 import PageHeader from '~/components/PageHeader';
 import ListView from '~/components/ListView';
-import CharacterCard from '~/components/Character/CharacterCard';
+import CharacterCard from '~/components/CharacterCard';
 
 
 export default function PokemonListPage() {

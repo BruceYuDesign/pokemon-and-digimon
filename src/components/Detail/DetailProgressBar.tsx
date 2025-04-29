@@ -1,4 +1,4 @@
-interface ProgressBarProps {
+interface DetailProgressBarProps {
   label: string;
   value?: number;
   maxValue: number;
@@ -7,7 +7,7 @@ interface ProgressBarProps {
 }
 
 
-export default function ProgressBar(props: ProgressBarProps) {
+export default function DetailProgressBar(props: DetailProgressBarProps) {
 
 
   if (props.isLoading) {

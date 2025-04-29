@@ -41,7 +41,7 @@ export const routes: Array<RouteObject> = [
             path: '/digimon/:digimonId',
             element: <DigimonDetailPage/>,
           },
-        ]
+        ],
       },
     ],
   },

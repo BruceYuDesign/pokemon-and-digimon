@@ -2,10 +2,10 @@ import type { DigimonDetail } from '~/services/digimonService';
 import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import PageHeader from '~/components/PageHeader';
-import CharacterThumbnail from '~/components/Character/CharacterThumbnail';
-import CharacterName from '~/components/Character/CharacterName';
-import CharacterTypes from '~/components/Character/CharacterTypes';
-import CharacterDescription from '~/components/Character/CharacterDescription';
+import DetailThumbnail from '~/components/Detail/DetailThumbnail';
+import DetailName from '~/components/Detail/DetailName';
+import DetailTypes from '~/components/Detail/DetailTypes';
+import DetailDescription from '~/components/Detail/DetailDescription';
 import ErrorRetryButton from '~/components/ErrorRetryButton';
 import { getDigimonById } from '~/services/digimonService';
 import { digimonTypeColors } from '~/libs/theme';
@@ -40,7 +40,7 @@ export default function DigimonDetailPage() {
   const pageContent = () => (
     <>
       {/* 角色圖片 */}
-      <CharacterThumbnail
+      <DetailThumbnail
         image={digimonDetail?.thumbnail}
         backgroundColor='#FFFFFF'
         alt={digimonDetail?.name}
@@ -49,18 +49,18 @@ export default function DigimonDetailPage() {
       {/* 角色資訊 */}
       <div className='flex flex-col items-center gap-6 p-6'>
         {/* 名稱 */}
-        <CharacterName
+        <DetailName
           name={digimonDetail?.name}
           isLoading={isLoading}
         />
         {/* 屬性 */}
-        <CharacterTypes
+        <DetailTypes
           types={digimonDetail?.types}
           typeColors={digimonTypeColors}
           isLoading={isLoading}
         />
         {/* 描述 */}
-        <CharacterDescription
+        <DetailDescription
           description={digimonDetail?.description}
           isLoading={isLoading}
         />

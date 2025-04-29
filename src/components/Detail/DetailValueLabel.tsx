@@ -1,4 +1,4 @@
-interface ValueLabelProps {
+interface DetailValueLabelProps {
   label: string;
   unit: string;
   value: number;
@@ -6,7 +6,7 @@ interface ValueLabelProps {
 }
 
 
-export default function CharacterValueLabel(props: ValueLabelProps) {
+export default function DetailValueLabel(props: DetailValueLabelProps) {
 
 
   if (props.isLoading) {

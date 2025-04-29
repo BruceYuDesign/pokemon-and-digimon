@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { FaQuestion } from 'react-icons/fa';
 
 
-interface CharacterThumbnailProps {
+interface DetailThumbnailProps {
   isLoading?: boolean;
   image?: string;
   backgroundColor?: string;
@@ -10,7 +10,7 @@ interface CharacterThumbnailProps {
 }
 
 
-export default function CharacterThumbnail(props: CharacterThumbnailProps) {
+export default function DetailThumbnail(props: DetailThumbnailProps) {
   const [isError, setIsError] = useState(false);
 
 

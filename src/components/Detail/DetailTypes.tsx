@@ -1,11 +1,11 @@
-interface CharacterTypesProps {
+interface DetailTypesProps {
   types?: Array<string>;
   typeColors: Record<string, string>;
   isLoading?: boolean;
 }
 
 
-export default function CharacterTypes(props: CharacterTypesProps) {
+export default function DetailTypes(props: DetailTypesProps) {
 
 
   if (props.isLoading) {

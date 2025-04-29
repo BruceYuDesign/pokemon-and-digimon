@@ -1,13 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import PageHeader from '~/components/PageHeader';
-import CharacterThumbnail from '~/components/Character/CharacterThumbnail';
-import CharacterName from '~/components/Character/CharacterName';
-import CharacterTypes from '~/components/Character/CharacterTypes';
-import CharacterValueLabel from '~/components/Character/CharacterValueLabel';
-import CharacterProgressBar from '~/components/Character/CharacterProgressBar';
+import DetailThumbnail from '~/components/Detail/DetailThumbnail';
+import DetailName from '~/components/Detail/DetailName';
+import DetailTypes from '~/components/Detail/DetailTypes';
+import DetailValueLabel from '~/components/Detail/DetailValueLabel';
+import DetailProgressBar from '~/components/Detail/DetailProgressBar';
 import ErrorRetryButton from '~/components/ErrorRetryButton';
-import { usePokemonDetail } from '~/context/pokemonDetailContext';
+import { usePokemonDetail } from '~/context/PokemonDetailContext';
 import { getPokemonById } from '~/services/pokemonService';
 import { pokemonTypeColors } from '~/libs/theme';
 
@@ -52,7 +52,7 @@ export default function PokemonDetailPage() {
         pageName={`#${pokemonId?.padStart(5, '0')}`}
       />
       {/* 角色圖片 */}
-      <CharacterThumbnail
+      <DetailThumbnail
         image={pokemonDetail?.thumbnail}
         backgroundColor={pokemonDetail?.color}
         alt={pokemonDetail?.name}
@@ -61,12 +61,12 @@ export default function PokemonDetailPage() {
       {/* 角色資訊 */}
       <div className='flex flex-col items-center gap-6 p-6'>
         {/* 名稱 */}
-        <CharacterName
+        <DetailName
           name={pokemonDetail?.name}
           isLoading={isLoading}
         />
         {/* 屬性 */}
-        <CharacterTypes
+        <DetailTypes
           types={pokemonDetail?.types}
           typeColors={pokemonTypeColors}
           isLoading={isLoading}
@@ -74,14 +74,14 @@ export default function PokemonDetailPage() {
         {/* 大小 */}
         <div className='w-full flex flex-row justify-around items-start'>
           {/* 體重 */}
-          <CharacterValueLabel
+          <DetailValueLabel
             label='Weight'
             unit='KG'
             value={pokemonDetail?.weight ? pokemonDetail.weight / 10 : 0}
             isLoading={isLoading}
           />
           {/* 身高 */}
-          <CharacterValueLabel
+          <DetailValueLabel
             label='Height'
             unit='M'
             value={pokemonDetail?.height ? pokemonDetail.height / 10 : 0}
@@ -94,7 +94,7 @@ export default function PokemonDetailPage() {
         </h2>
         <div className='w-full flex flex-col items-center gap-4'>
           {/* 生命值 */}
-          <CharacterProgressBar
+          <DetailProgressBar
             label='HP'
             value={pokemonDetail?.hp}
             maxValue={255}
@@ -102,7 +102,7 @@ export default function PokemonDetailPage() {
             isLoading={isLoading}
           />
           {/* 攻擊力 */}
-          <CharacterProgressBar
+          <DetailProgressBar
             label='ATK'
             value={pokemonDetail?.attack}
             maxValue={190}
@@ -110,7 +110,7 @@ export default function PokemonDetailPage() {
             isLoading={isLoading}
           />
           {/* 防禦力 */}
-          <CharacterProgressBar
+          <DetailProgressBar
             label='DEF'
             value={pokemonDetail?.defense}
             maxValue={250}
@@ -118,7 +118,7 @@ export default function PokemonDetailPage() {
             isLoading={isLoading}
           />
           {/* 速度 */}
-          <CharacterProgressBar
+          <DetailProgressBar
             label='SPD'
             value={pokemonDetail?.speed}
             maxValue={200}
@@ -126,7 +126,7 @@ export default function PokemonDetailPage() {
             isLoading={isLoading}
           />
           {/* 經驗值 */}
-          <CharacterProgressBar
+          <DetailProgressBar
             label='EXP'
             value={pokemonDetail?.exp}
             maxValue={635}

@@ -1,10 +1,10 @@
-interface CharacterDescriptionProps {
+interface DetailDescriptionProps {
   description?: string;
   isLoading?: boolean;
 }
 
 
-export default function CharacterDescription(props: CharacterDescriptionProps) {
+export default function DetailDescription(props: DetailDescriptionProps) {
 
 
   if (props.isLoading) {

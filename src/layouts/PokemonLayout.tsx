@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import { ListCacheProvider } from '~/context/ListCacheContext';
-import { PokemonDetailProvider } from '~/context/pokemonDetailContext';
+import { PokemonDetailProvider } from '~/context/PokemonDetailContext';
 
 
 export default function PokemonLayout() {

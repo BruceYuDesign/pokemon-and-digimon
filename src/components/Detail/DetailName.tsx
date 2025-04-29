@@ -1,10 +1,10 @@
-interface CharacterNameProps {
+interface DetailNameProps {
   isLoading?: boolean;
   name?: string;
 }
 
 
-export default function CharacterName(props: CharacterNameProps) {
+export default function DetailName(props: DetailNameProps) {
 
 
   if (props.isLoading) {
