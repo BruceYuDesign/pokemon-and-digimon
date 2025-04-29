@@ -1,100 +1,122 @@
-import { useEffect } from 'react';
+import type { PokemonDetail } from '~/services/pokemonService';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import PageHeader from '~/components/PageHeader';
-import ProgressBar from '~/components/ProgressBar';
-import { usePokemonDetail } from '~/context/pokemonDetailContext';
-import { getPokemon } from '~/services/pokemonService';
+import { usePageLayout } from '~/context/PageLayoutContext';
+import { useDetailCache } from '~/context/DetailCacheContext';
+import { getPokemonById } from '~/services/pokemonService';
 import { pokemonTypeColors } from '~/libs/theme';
+import DetailThumbnail from '~/components/Detail/DetailThumbnail';
+import DetailName from '~/components/Detail/DetailName';
+import DetailTypes from '~/components/Detail/DetailTypes';
+import DetailValueLabel from '~/components/Detail/DetailValueLabel';
+import DetailProgressBar from '~/components/Detail/DetailProgressBar';
+import DetailErrorContent from '~/components/Detail/DetailErrorContent';
 
 
+/**
+ * Pokemon 詳細資料頁面
+ * @function PokemonDetailPage
+ */
 export default function PokemonDetailPage() {
-  const { pokemonDetail, setPokemonDetail } = usePokemonDetail();
+  // 調用頁面佈局狀態
+  const { setHeader } = usePageLayout();
+  // 調用角色詳細資料緩存
+  const { detailCache, setDetailCache } = useDetailCache();
+  // 取得路由參數
   const { pokemonId } = useParams<{ pokemonId: string }>();
+  // 角色詳細資料（型別處理）
+  const pokemonDetail = detailCache as PokemonDetail;
+  // 是否讀取中
+  const [isLoading, setIsLoading] = useState(true);
+  // 是否有錯誤
+  const [hasError, setHasError] = useState(false);
 
 
-  useEffect(() => {
-    // 捲動至頂部
-    window.scrollTo(0, 0);
-
-    // 第一次載入應用程式時，取得角色詳細資料
-    const getAndSetPokemonDetail = async () => {
-      const pokemonDetail = await getPokemon(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`);
-      setPokemonDetail(pokemonDetail);
+  // 取得並設定 Pokemon 詳細資料
+  const getAndSetPokemonDetail = useCallback(async () => {
+    setIsLoading(true);
+    try{
+      const pokemonDetail = await getPokemonById(pokemonId as string);
+      setDetailCache(pokemonDetail);
+      setHasError(false);
+    } catch {
+      setHasError(true);
+    } finally {
+      setIsLoading(false);
     }
-    if (!pokemonDetail) {
+  }, [pokemonId]);
+
+
+  // 頁面載入時，若未有緩存，則取得角色詳細資料
+  useEffect(() => {
+    if (detailCache) {
+      setIsLoading(false);
+    } else {
       getAndSetPokemonDetail();
     }
   }, []);
 
 
+  // 監聽 Pokemon 詳細資料是否有更新，設定頁面佈局
+  useEffect(() => {
+    setHeader({
+      textColor: '#FFFFFF',
+      backgroundColor: pokemonDetail?.color || 'transparent',
+      prevPageUrl: '/pokemon',
+      prevPageName: 'Pokemon',
+      pageName: `#${pokemonId?.padStart(5, '0')}`,
+    });
+  }, [pokemonDetail]);
+
+
+  // 錯誤頁面
+  if (!isLoading && hasError) {
+    return (
+      <DetailErrorContent
+        retryHandler={getAndSetPokemonDetail}
+      />
+    );
+  }
+
+
   return (
     <>
-      <PageHeader
-        textColor='#FFFFFF'
-        backgroundColor='transparent'
-        prevPageUrl='/pokemon'
-        prevPageName='Pokemon'
-        pageName={`#${pokemonId?.padStart(4, '0')}`}
-      />
       {/* 角色圖片 */}
-      <div
-        className='flex items-center justify-center h-[280px] rounded-b-4xl'
-        style={{
-          backgroundColor: pokemonDetail?.color || '#3A393B',
-        }}
-      >
-        {
-          pokemonDetail?.thumbnail && (
-            <img
-              className='h-2/3 w-auto'
-              src={pokemonDetail?.thumbnail || ''}
-              alt={pokemonDetail?.name || 'Unknown'}
-            />
-          )
-        }
-      </div>
+      <DetailThumbnail
+        image={pokemonDetail?.thumbnail}
+        backgroundColor={pokemonDetail?.color}
+        alt={pokemonDetail?.name}
+        isLoading={isLoading}
+      />
       {/* 角色資訊 */}
       <div className='flex flex-col items-center gap-6 p-6'>
         {/* 名稱 */}
-        <h1 className='text-3xl'>
-          {pokemonDetail?.name || 'Unknown'}
-        </h1>
+        <DetailName
+          name={pokemonDetail?.name}
+          isLoading={isLoading}
+        />
         {/* 屬性 */}
-        <div className='flex flex-row gap-4 flex-wrap'>
-          {
-            pokemonDetail?.types?.map(type => (
-              <span
-                key={type}
-                className='px-3 min-w-28 h-6 flex items-center justify-center rounded-full'
-                style={{
-                  backgroundColor: pokemonTypeColors[type],
-                }}
-              >
-                {type}
-              </span>
-            )) || 'Unknown'
-          }
-        </div>
+        <DetailTypes
+          types={pokemonDetail?.types}
+          typeColors={pokemonTypeColors}
+          isLoading={isLoading}
+        />
         {/* 大小 */}
         <div className='w-full flex flex-row justify-around items-start'>
           {/* 體重 */}
-          <div className='w-32 flex flex-col items-center gap-2'>
-            <p className='text-xl'>
-              {pokemonDetail?.weight ? pokemonDetail.weight / 10 : 0} KG
-            </p>
-            <span className='text-sm opacity-50'>
-              Weight
-            </span>
-          </div>
+          <DetailValueLabel
+            label='Weight'
+            unit='KG'
+            value={pokemonDetail?.weight ? pokemonDetail.weight / 10 : 0}
+            isLoading={isLoading}
+          />
           {/* 身高 */}
-          <div className='w-32 flex flex-col items-center gap-2'>
-            <p className='text-xl'>
-              {pokemonDetail?.height ? pokemonDetail.height / 10 : 0} M
-            </p>
-            <span className='text-sm opacity-50'>
-              Height
-            </span>
-          </div>
+          <DetailValueLabel
+            label='Height'
+            unit='M'
+            value={pokemonDetail?.height ? pokemonDetail.height / 10 : 0}
+            isLoading={isLoading}
+          />
         </div>
         {/* 數值 */}
         <h2 className='text-xl'>
@@ -102,39 +124,44 @@ export default function PokemonDetailPage() {
         </h2>
         <div className='w-full flex flex-col items-center gap-4'>
           {/* 生命值 */}
-          <ProgressBar
+          <DetailProgressBar
             label='HP'
-            value={pokemonDetail?.hp || 0}
+            value={pokemonDetail?.hp}
             maxValue={255}
             progressColor='#D63843'
+            isLoading={isLoading}
           />
           {/* 攻擊力 */}
-          <ProgressBar
+          <DetailProgressBar
             label='ATK'
-            value={pokemonDetail?.attack || 0}
+            value={pokemonDetail?.attack}
             maxValue={190}
             progressColor='#FEA726'
+            isLoading={isLoading}
           />
           {/* 防禦力 */}
-          <ProgressBar
+          <DetailProgressBar
             label='DEF'
-            value={pokemonDetail?.defense || 0}
+            value={pokemonDetail?.defense}
             maxValue={250}
             progressColor='#0091EA'
+            isLoading={isLoading}
           />
           {/* 速度 */}
-          <ProgressBar
+          <DetailProgressBar
             label='SPD'
-            value={pokemonDetail?.speed || 0}
+            value={pokemonDetail?.speed}
             maxValue={200}
             progressColor='#8EB0C4'
+            isLoading={isLoading}
           />
           {/* 經驗值 */}
-          <ProgressBar
+          <DetailProgressBar
             label='EXP'
-            value={pokemonDetail?.exp || 0}
+            value={pokemonDetail?.exp}
             maxValue={635}
             progressColor='#388D3E'
+            isLoading={isLoading}
           />
         </div>
       </div>
