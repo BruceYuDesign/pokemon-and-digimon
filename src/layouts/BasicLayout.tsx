@@ -3,6 +3,10 @@ import { ToastContainer } from 'material-react-toastify';
 import ScrollToTop from '~/components/ScrollToTop';
 
 
+/**
+ * 基本版面佈局
+ * @function BasicLayout
+ */
 export default function BasicLayout() {
   return (
     <>
@@ -14,6 +18,7 @@ export default function BasicLayout() {
           <Outlet/>
         </div>
       </div>
+      {/* 吐司訊息容器 */}
       <ToastContainer
         position='top-center'
         theme='dark'
@@ -21,6 +26,7 @@ export default function BasicLayout() {
         limit={1}
         autoClose={2000}
       />
+      {/* 頁面置頂觸發器 */}
       <ScrollToTop/>
     </>
   );

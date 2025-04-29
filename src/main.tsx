@@ -5,6 +5,9 @@ import App from '~/App';
 import '~/assets/styles/main.css';
 
 
+/**
+ * 主程式入口
+ */
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>

@@ -2,10 +2,18 @@ import { VscDebugRestart } from 'react-icons/vsc';
 
 
 interface ErrorRetryButtonProps {
+  /**
+   * 錯誤重試函式
+   */
   retryHandler: () => void;
 }
 
 
+/**
+ * 錯誤重試按鈕
+ * @function ErrorRetryButton
+ * @param {ErrorRetryButtonProps} props
+ */
 export default function ErrorRetryButton(props: ErrorRetryButtonProps) {
   return (
     <button

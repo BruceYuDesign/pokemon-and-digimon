@@ -1,3 +1,4 @@
+// Pokemon 屬性對照色號
 export const pokemonTypeColors: Record<string, string> = {
   grass: '#4E7A40',
   poison: '#6A4E6A',
@@ -20,6 +21,7 @@ export const pokemonTypeColors: Record<string, string> = {
 }
 
 
+// Digimon 屬性對照色號
 export const digimonTypeColors: Record<string, string> = {
   'Cyborg': '#7C39AC',
   'Puppet': '#2C7B59',

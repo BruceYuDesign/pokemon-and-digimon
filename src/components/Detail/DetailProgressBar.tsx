@@ -1,15 +1,36 @@
 interface DetailProgressBarProps {
+  /**
+   * 能力條的標籤文字
+   */
   label: string;
+  /**
+   * 能力條的數值
+   */
   value?: number;
+  /**
+   * 能力條的最大值
+   */
   maxValue: number;
+  /**
+   * 能力條顏色
+   */
   progressColor: string;
+  /**
+   * 是否讀取中，如果是則顯示讀取骨架
+   */
   isLoading?: boolean;
 }
 
 
+/**
+ * 角色介紹：能力條
+ * @function DetailProgressBar
+ * @param {DetailProgressBarProps} props
+ */
 export default function DetailProgressBar(props: DetailProgressBarProps) {
 
 
+  // 讀取骨架
   if (props.isLoading) {
     return (
       <div className='w-full flex flex-row justify-start items-center'>
