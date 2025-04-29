@@ -18,6 +18,7 @@ export default function PokemonDetailPage() {
   const [hasError, setHasError] = useState(false);
   const { detailCache, setDetailCache } = useDetailCache();
   const { pokemonId } = useParams<{ pokemonId: string }>();
+  const pokemonDetail = detailCache as PokemonDetail;
 
 
   const getAndSetPokemonDetail = useCallback(async () => {
@@ -44,16 +45,8 @@ export default function PokemonDetailPage() {
 
 
   const pageContent = () => {
-    const pokemonDetail = detailCache as PokemonDetail;
     return(
       <>
-        <PageHeader
-          textColor='#FFFFFF'
-          backgroundColor={pokemonDetail?.color || 'transparent'}
-          prevPageUrl='/pokemon'
-          prevPageName='Pokemon'
-          pageName={`#${pokemonId?.padStart(5, '0')}`}
-        />
         {/* 角色圖片 */}
         <DetailThumbnail
           image={pokemonDetail?.thumbnail}
@@ -156,7 +149,7 @@ export default function PokemonDetailPage() {
     <>
       <PageHeader
         textColor='#FFFFFF'
-        backgroundColor='transparent'
+        backgroundColor={pokemonDetail?.color || 'transparent'}
         prevPageUrl='/pokemon'
         prevPageName='Pokemon'
         pageName={`#${pokemonId?.padStart(5, '0')}`}

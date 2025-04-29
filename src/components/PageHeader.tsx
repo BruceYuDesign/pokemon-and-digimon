@@ -18,7 +18,7 @@ export default function PageHeader(props: PageHeaderProps) {
     >
       <div
         className='util-container
-        h-[var(--header-height)] px-4 flex flex-row items-center justify-between
+        h-header px-4 flex flex-row items-center justify-between
         lg:rounded-b-2xl'
         style={{
           color: props.textColor,

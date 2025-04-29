@@ -31,7 +31,7 @@ export default function DetailProgressBar(props: DetailProgressBarProps) {
       <span className='w-12 opacity-50 text-sm'>
         {props.label}
       </span>
-      <div className='relative flex flex-row justify-start items-stretch bg-white w-full h-6 rounded-full overflow-hidden'>
+      <div className='relative flex flex-row justify-start items-stretch bg-foreground w-full h-6 rounded-full overflow-hidden'>
         {/* 進度條 白底 黑字 */}
         <div
           className='px-2 flex flex-row justify-start items-center rounded-full'
@@ -39,7 +39,7 @@ export default function DetailProgressBar(props: DetailProgressBarProps) {
             width: `${(props.value || 0) / props.maxValue * 100}%`,
           }}
         >
-          <span className='ml-auto text-black text-sm'>
+          <span className='ml-auto text-background text-sm'>
             {props.value || 0}/{props.maxValue}
           </span>
         </div>

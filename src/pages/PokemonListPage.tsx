@@ -73,7 +73,7 @@ export default function PokemonListPage() {
 
 
   return (
-    <div className='pt-[var(--header-height)]'>
+    <div className='pt-header'>
       <PageHeader
         textColor='#FFFFFF'
         backgroundColor='#D53B47'

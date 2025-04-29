@@ -27,19 +27,14 @@ export default function DetailTypes(props: DetailTypesProps) {
               key={type}
               className='px-3 min-w-28 h-6 flex items-center justify-center rounded-full'
               style={{
-                backgroundColor: props.typeColors[type] || '#3A393B',
+                backgroundColor: props.typeColors[type] || 'var(--color-background-alt)',
               }}
             >
               {type}
             </span>
           )
         )) : (
-          <span
-            className='px-3 min-w-28 h-6 flex items-center justify-center rounded-full'
-            style={{
-              backgroundColor: '#3A393B',
-            }}
-          >
+          <span className='px-3 min-w-28 h-6 flex items-center justify-center rounded-full bg-background-alt'>
             Unknown
           </span>
         )

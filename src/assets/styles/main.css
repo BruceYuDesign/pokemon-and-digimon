@@ -2,13 +2,18 @@
 @import "material-react-toastify/dist/ReactToastify.css";
 
 
-@layer base {
-  :root {
-    --header-height: 3rem;
-  }
+@theme {
+  --color-background: #2B292C;
+  --color-background-alt: #3A393B;
+  --color-foreground: #FFFFFF;
+  --height-header: 3rem;
+  --padding-header: 3rem;
+}
 
+
+@layer base {
   body {
-    @apply bg-[#2B292C] text-white;
+    @apply bg-background text-foreground;
   }
 }
 
@@ -17,8 +22,7 @@
   .util-container {
     @apply max-w-screen-lg w-full mx-auto;
   }
-
   .util-skeleton {
-    @apply bg-[#3A393B] animate-pulse;
+    @apply bg-background-alt animate-pulse;
   }
 }

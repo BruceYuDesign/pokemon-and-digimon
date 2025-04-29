@@ -67,7 +67,7 @@ export default function DigimonListPage() {
 
 
   return (
-    <div className='pt-[var(--header-height)]'>
+    <div className='pt-header'>
       <PageHeader
         textColor='#FFFFFF'
         backgroundColor='#2B5DB2'

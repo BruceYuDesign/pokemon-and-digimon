@@ -42,7 +42,7 @@ export default function HomePage() {
                 alt={pageLink.label}
               />
             </div>
-            <h2 className='h-1/4 text-3xl flex items-center justify-center'>
+            <h2 className='h-1/4 text-3xl flex items-center justify-center text-white'>
               {pageLink.label}
             </h2>
           </Link>

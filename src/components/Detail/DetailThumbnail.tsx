@@ -36,7 +36,7 @@ export default function DetailThumbnail(props: DetailThumbnailProps) {
       style={{
         backgroundColor: !isError
           ? props.backgroundColor
-          : '#3A393B',
+          : 'var(--color-background-alt)',
       }}
     >
       {
@@ -49,7 +49,7 @@ export default function DetailThumbnail(props: DetailThumbnailProps) {
           />
         ) : (
           <FaQuestion
-            className='w-1/2 h-1/2 text-white opacity-25'
+            className='w-1/2 h-1/2 text-foreground opacity-25'
           />
         )
       }
