@@ -34,6 +34,7 @@ export default function DigimonDetailPage() {
 
   useEffect(() => {
     getAndSetDigimonDetail();
+    window.scrollTo(0, 0);
   }, []);
 
 
