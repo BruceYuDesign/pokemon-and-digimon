@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getPokemons, getPokemonByUrl } from '~/services/pokemonService';
 import { useListCache } from '~/context/ListCacheContext';
-import { usePokemonDetail } from '~/context/PokemonDetailContext';
+import { useDetailCache } from '~/context/DetailCacheContext';
 import PageHeader from '~/components/PageHeader';
 import ListView from '~/components/ListView';
 import CharacterCard from '~/components/CharacterCard';
@@ -15,7 +15,7 @@ export default function PokemonListPage() {
   const lockedRequest = useRef<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [hasError, setHasError] = useState<boolean>(false);
-  const { setPokemonDetail } = usePokemonDetail();
+  const { setDetailCache } = useDetailCache();
 
 
   const getAndSetPokemons = async (getPokemonsUrl?: string) => {
@@ -49,7 +49,7 @@ export default function PokemonListPage() {
 
 
   const handleCardClick = async (pokemonDetail: PokemonDetail) => {
-    setPokemonDetail(pokemonDetail);
+    setDetailCache(pokemonDetail);
     navigate(`/pokemon/${pokemonDetail.id}`);
   }
 

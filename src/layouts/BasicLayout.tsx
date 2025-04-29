@@ -4,7 +4,7 @@ import { ToastContainer } from 'material-react-toastify';
 
 export default function BasicLayout() {
   return (
-    <div className='w-full min-h-dvh'>
+    <div className='w-full min-h-dvh pb-10'>
       <div
         className='util-container
         flex flex-col'
