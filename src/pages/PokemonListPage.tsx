@@ -76,7 +76,7 @@ export default function PokemonListPage() {
     <div className='pt-header'>
       <PageHeader
         textColor='#FFFFFF'
-        backgroundColor='#D53B47'
+        backgroundColor='var(--color-pokemon)'
         prevPageUrl='/'
         prevPageName='Home'
         pageName='Pokemon'

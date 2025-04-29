@@ -8,13 +8,13 @@ const pageLinks = [
     href: '/pokemon',
     label: 'Pokemon',
     image: PokemonCoverImage,
-    backgroundColor: '#D53B47',
+    backgroundColor: 'var(--color-pokemon)',
   },
   {
     href: '/digimon',
     label: 'Digimon',
     image: DigimonCoverImage,
-    backgroundColor: '#2B5DB2',
+    backgroundColor: 'var(--color-digimon)',
   },
 ];
 

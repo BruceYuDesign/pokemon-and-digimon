@@ -6,6 +6,8 @@
   --color-background: #2B292C;
   --color-background-alt: #3A393B;
   --color-foreground: #FFFFFF;
+  --color-pokemon: #D53B47;
+  --color-digimon: #2B5DB2;
   --height-header: 3rem;
   --padding-header: 3rem;
 }

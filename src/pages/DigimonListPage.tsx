@@ -70,7 +70,7 @@ export default function DigimonListPage() {
     <div className='pt-header'>
       <PageHeader
         textColor='#FFFFFF'
-        backgroundColor='#2B5DB2'
+        backgroundColor='var(--color-pokemon)'
         prevPageUrl='/'
         prevPageName='Home'
         pageName='Digimon'
