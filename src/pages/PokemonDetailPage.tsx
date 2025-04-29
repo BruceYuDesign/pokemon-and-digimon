@@ -40,7 +40,6 @@ export default function PokemonDetailPage() {
     } else {
       getAndSetPokemonDetail();
     }
-    window.scrollTo(0, 0);
   }, []);
 
 

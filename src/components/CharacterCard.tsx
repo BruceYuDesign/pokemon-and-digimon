@@ -54,7 +54,10 @@ export default function CharacterCard(props: CharacterCardProps) {
                   />
                 ) : (
                   <FaQuestion
-                    className='w-1/2 h-1/2 text-white opacity-25'
+                    className='w-1/2 h-1/2 opacity-25'
+                    style={{
+                      color: props.textColor,
+                    }}
                   />
                 )
               }

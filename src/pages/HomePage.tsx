@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PokemonCoverImage from '~/assets/images/pokemon-cover.png';
 import DigimonCoverImage from '~/assets/images/digimon-cover.png';
@@ -21,13 +20,6 @@ const pageLinks = [
 
 
 export default function HomePage() {
-
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-
   return (
     <div
       className='p-8 w-full min-h-dvh grid grid-cols-1 auto-rows-max place-content-center gap-8

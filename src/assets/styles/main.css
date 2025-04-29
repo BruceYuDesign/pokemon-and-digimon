@@ -3,6 +3,10 @@
 
 
 @layer base {
+  :root {
+    --header-height: 3rem;
+  }
+
   body {
     @apply bg-[#2B292C] text-white;
   }
