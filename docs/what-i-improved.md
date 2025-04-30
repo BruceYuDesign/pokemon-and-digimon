@@ -13,7 +13,7 @@
 
 > ✅ 解法：透過 `IntersectionObserver` 偵測元件是否進入視窗範圍，僅渲染可視區域的元件內容，提升效能並降低記憶體消耗。
 
-![scroll-infinity](./images/scroll-infinity.png)
+![scroll-infinity](./images/scroll-infinity.jpg)
 
 ---
 
@@ -44,7 +44,7 @@ API 載入時間不可避免，若畫面完全空白將造成使用者困惑。
 
 > ✅ 解法：導入 Skeleton UI，在資料未到前提供佔位視覺，提升使用者感知效能與信任感。
 
-![skeleton-loading](./images/skeleton-loading.png)
+![skeleton-loading](./images/skeleton-loading.jpg)
 
 ---
 
@@ -54,4 +54,4 @@ API 請求可能因網路或伺服器問題失敗。
 
 > ✅ 解法：統一處理錯誤回應，顯示清楚錯誤訊息並提供「重試」按鈕，避免中斷操作流程。
 
-![error-handler](./images/error-handler.png)
+![error-handler](./images/error-handler.jpg)
