@@ -15,11 +15,15 @@ interface ListViewProps {
   /**
    * 是否讀取中
    */
-  isLoading: boolean;
+  isFetching: boolean;
   /**
    * 是否有錯誤
    */
-  hasError: boolean;
+  isError: boolean;
+  /**
+   * 是否還有下一頁
+   */
+  hasNextPage: boolean;
 }
 
 
@@ -36,7 +40,8 @@ export default function ListView(props: ListViewProps) {
   // 監聽是否滾動到下一頁的元素
   useEffect(() => {
     const observer = new IntersectionObserver(([{ isIntersecting }]) => {
-      if (isIntersecting && !props.isLoading && !props.hasError) {
+      if (isIntersecting && !props.isFetching && !props.isError && props.hasNextPage) {
+        // console.log('觸發下一頁');
         props.nextPageHandler();
       }
     }, { threshold: 0.5 });
@@ -46,7 +51,7 @@ export default function ListView(props: ListViewProps) {
     }
 
     return () => observer.disconnect();
-  }, [props.isLoading, props.hasError]);
+  }, [props.isFetching, props.isError]);
 
 
   return (
@@ -65,7 +70,7 @@ export default function ListView(props: ListViewProps) {
       >
         {/* 讀取中 */}
         {
-          props.isLoading && (
+          props.isFetching && (
             <BiLoader
               className='w-8 h-8 mx-auto opacity-50 animate-spin'
             />
@@ -73,7 +78,7 @@ export default function ListView(props: ListViewProps) {
         }
         {/* 錯誤重試 */}
         {
-          (props.hasError && !props.isLoading) && (
+          (props.isError && !props.isFetching) && (
             <ErrorRetryButton
               retryHandler={props.nextPageHandler}
             />
