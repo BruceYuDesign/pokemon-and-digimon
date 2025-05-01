@@ -2,6 +2,7 @@ import { useRef, useEffect } from 'react';
 import { BiLoader } from 'react-icons/bi';
 import ErrorRetryButton from '~/components/ErrorRetryButton';
 import OfflineMessage from '~/components/OfflineMessage';
+import CharacterCardsSkeleton from '~/components/CharacterCardsSkeleton';
 
 
 interface ListViewProps {
@@ -65,7 +66,14 @@ export default function ListView(props: ListViewProps) {
         className='mt-header p-4 grid grid-cols-2 gap-4 auto-rows-max
         md:grid-cols-3'
       >
-        {props.children}
+        {
+          props.children || (
+            // 讀取骨架，若沒有錯誤且沒有暫停請求
+            (!props.isError && !props.isPaused) && (
+              <CharacterCardsSkeleton/>
+            )
+          )
+        }
       </div>
       {/* 下一頁容器 */}
       <div
