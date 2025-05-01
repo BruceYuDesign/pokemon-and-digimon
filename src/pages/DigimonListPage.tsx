@@ -25,6 +25,7 @@ export default function DigimonListPage() {
     data: digimonsData,
     isFetching,
     isError,
+    isPaused,
     fetchNextPage,
     hasNextPage,
   } = useDigimonListQuery();
@@ -58,6 +59,7 @@ export default function DigimonListPage() {
       nextPageHandler={fetchNextPage}
       isFetching={isFetching}
       isError={isError}
+      isPaused={isPaused}
       hasNextPage={hasNextPage}
     >
       {

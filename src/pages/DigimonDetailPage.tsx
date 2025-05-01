@@ -8,6 +8,7 @@ import DetailName from '~/components/Detail/DetailName';
 import DetailTypes from '~/components/Detail/DetailTypes';
 import DetailDescription from '~/components/Detail/DetailDescription';
 import DetailErrorContent from '~/components/Detail/DetailErrorContent';
+import DetailOfflineContent from '~/components/Detail/DetailOfflineContent';
 
 
 /**
@@ -26,6 +27,7 @@ export default function DigimonDetailPage() {
     data: digimonDetail,
     isLoading,
     isError,
+    isPaused,
     refetch,
   } = useDigimonDetailQuery(digimonId as string);
 
@@ -48,6 +50,14 @@ export default function DigimonDetailPage() {
       <DetailErrorContent
         retryHandler={refetch}
       />
+    );
+  }
+
+
+  // 網路斷線
+  if (isPaused) {
+    return (
+      <DetailOfflineContent/>
     );
   }
 

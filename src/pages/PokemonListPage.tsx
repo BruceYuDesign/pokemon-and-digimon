@@ -25,6 +25,7 @@ export default function PokemonListPage() {
     data: pokemonsData,
     isFetching,
     isError,
+    isPaused,
     fetchNextPage,
     hasNextPage,
   } = usePokemonListQuery();
@@ -58,6 +59,7 @@ export default function PokemonListPage() {
       nextPageHandler={fetchNextPage}
       isFetching={isFetching}
       isError={isError}
+      isPaused={isPaused}
       hasNextPage={hasNextPage}
     >
       {

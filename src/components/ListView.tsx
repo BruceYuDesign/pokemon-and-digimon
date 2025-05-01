@@ -1,6 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { BiLoader } from 'react-icons/bi';
 import ErrorRetryButton from '~/components/ErrorRetryButton';
+import OfflineMessage from '~/components/OfflineMessage';
 
 
 interface ListViewProps {
@@ -20,6 +21,10 @@ interface ListViewProps {
    * 是否有錯誤
    */
   isError: boolean;
+  /**
+   * 是否暫停請求（普遍為網路斷線）
+   */
+  isPaused: boolean;
   /**
    * 是否還有下一頁
    */
@@ -41,7 +46,6 @@ export default function ListView(props: ListViewProps) {
   useEffect(() => {
     const observer = new IntersectionObserver(([{ isIntersecting }]) => {
       if (isIntersecting && !props.isFetching && !props.isError && props.hasNextPage) {
-        // console.log('觸發下一頁');
         props.nextPageHandler();
       }
     }, { threshold: 0.5 });
@@ -65,7 +69,7 @@ export default function ListView(props: ListViewProps) {
       </div>
       {/* 下一頁容器 */}
       <div
-        className='h-20 flex items-center justify-center'
+        className='min-h-20 flex items-center justify-center'
         ref={nextPageElement}
       >
         {/* 讀取中 */}
@@ -78,10 +82,16 @@ export default function ListView(props: ListViewProps) {
         }
         {/* 錯誤重試 */}
         {
-          (props.isError && !props.isFetching) && (
+          props.isError && (
             <ErrorRetryButton
               retryHandler={props.nextPageHandler}
             />
+          )
+        }
+        {/* 網路斷線 */}
+        {
+          props.isPaused && (
+            <OfflineMessage/>
           )
         }
       </div>
