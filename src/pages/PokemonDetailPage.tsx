@@ -9,6 +9,7 @@ import DetailTypes from '~/components/Detail/DetailTypes';
 import DetailValueLabel from '~/components/Detail/DetailValueLabel';
 import DetailProgressBar from '~/components/Detail/DetailProgressBar';
 import DetailErrorContent from '~/components/Detail/DetailErrorContent';
+import DetailOfflineContent from '~/components/Detail/DetailOfflineContent';
 
 
 /**
@@ -27,6 +28,7 @@ export default function PokemonDetailPage() {
     data: pokemonDetail,
     isLoading,
     isError,
+    isPaused,
     refetch,
   } = usePokemonDetailQuery(pokemonId as string);
 
@@ -49,6 +51,14 @@ export default function PokemonDetailPage() {
       <DetailErrorContent
         retryHandler={refetch}
       />
+    );
+  }
+
+
+  // 網路斷線
+  if (isPaused) {
+    return (
+      <DetailOfflineContent/>
     );
   }
 
