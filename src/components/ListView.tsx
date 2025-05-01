@@ -1,6 +1,8 @@
 import { useRef, useEffect } from 'react';
 import { BiLoader } from 'react-icons/bi';
 import ErrorRetryButton from '~/components/ErrorRetryButton';
+import OfflineMessage from '~/components/OfflineMessage';
+import CharacterCardsSkeleton from '~/components/CharacterCardsSkeleton';
 
 
 interface ListViewProps {
@@ -15,11 +17,19 @@ interface ListViewProps {
   /**
    * 是否讀取中
    */
-  isLoading: boolean;
+  isFetching: boolean;
   /**
    * 是否有錯誤
    */
-  hasError: boolean;
+  isError: boolean;
+  /**
+   * 是否暫停請求（普遍為網路斷線）
+   */
+  isPaused: boolean;
+  /**
+   * 是否還有下一頁
+   */
+  hasNextPage: boolean;
 }
 
 
@@ -36,7 +46,7 @@ export default function ListView(props: ListViewProps) {
   // 監聽是否滾動到下一頁的元素
   useEffect(() => {
     const observer = new IntersectionObserver(([{ isIntersecting }]) => {
-      if (isIntersecting && !props.isLoading && !props.hasError) {
+      if (isIntersecting && !props.isFetching && !props.isError && props.hasNextPage) {
         props.nextPageHandler();
       }
     }, { threshold: 0.5 });
@@ -46,7 +56,7 @@ export default function ListView(props: ListViewProps) {
     }
 
     return () => observer.disconnect();
-  }, [props.isLoading, props.hasError]);
+  }, [props.isFetching, props.isError]);
 
 
   return (
@@ -56,16 +66,23 @@ export default function ListView(props: ListViewProps) {
         className='mt-header p-4 grid grid-cols-2 gap-4 auto-rows-max
         md:grid-cols-3'
       >
-        {props.children}
+        {
+          props.children || (
+            // 讀取骨架，若沒有錯誤且沒有暫停請求
+            (!props.isError && !props.isPaused) && (
+              <CharacterCardsSkeleton/>
+            )
+          )
+        }
       </div>
       {/* 下一頁容器 */}
       <div
-        className='h-20 flex items-center justify-center'
+        className='min-h-20 flex items-center justify-center'
         ref={nextPageElement}
       >
         {/* 讀取中 */}
         {
-          props.isLoading && (
+          props.isFetching && (
             <BiLoader
               className='w-8 h-8 mx-auto opacity-50 animate-spin'
             />
@@ -73,10 +90,16 @@ export default function ListView(props: ListViewProps) {
         }
         {/* 錯誤重試 */}
         {
-          (props.hasError && !props.isLoading) && (
+          props.isError && (
             <ErrorRetryButton
               retryHandler={props.nextPageHandler}
             />
+          )
+        }
+        {/* 網路斷線 */}
+        {
+          props.isPaused && (
+            <OfflineMessage/>
           )
         }
       </div>

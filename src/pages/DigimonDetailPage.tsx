@@ -1,14 +1,14 @@
-import type { DigimonDetail } from '~/services/digimonService';
-import { useState, useEffect, useCallback } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { usePageLayout } from '~/context/PageLayoutContext';
-import { getDigimonById } from '~/services/digimonService';
+import { useDigimonDetailQuery } from '~/services/query/digimonQuery';
 import { digimonTypeColors } from '~/libs/theme';
 import DetailThumbnail from '~/components/Detail/DetailThumbnail';
 import DetailName from '~/components/Detail/DetailName';
 import DetailTypes from '~/components/Detail/DetailTypes';
 import DetailDescription from '~/components/Detail/DetailDescription';
 import DetailErrorContent from '~/components/Detail/DetailErrorContent';
+import DetailOfflineContent from '~/components/Detail/DetailOfflineContent';
 
 
 /**
@@ -20,33 +20,16 @@ export default function DigimonDetailPage() {
   const { setHeader } = usePageLayout();
   // 取得路由參數
   const { digimonId } = useParams<{ digimonId: string }>();
-  // Digimon 詳細資料
-  const [digimonDetail, setDigimonDetail] = useState<DigimonDetail | null>(null);
-  // 是否讀取中
-  const [isLoading, setIsLoading] = useState(true);
-  // 是否有錯誤
-  const [hasError, setHasError] = useState(false);
 
 
-  // 取得並設定 Digimon 詳細資料
-  const getAndSetDigimonDetail = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const digimonDetail = await getDigimonById(digimonId as string);
-      setDigimonDetail(digimonDetail);
-      setHasError(false);
-    } catch {
-      setHasError(true);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [digimonId]);
-
-
-  // 頁面載入時，取得 Digimon 詳細資料
-  useEffect(() => {
-    getAndSetDigimonDetail();
-  }, []);
+  // 取得 Digimon 詳細資料
+  const {
+    data: digimonDetail,
+    isLoading,
+    isError,
+    isPaused,
+    refetch,
+  } = useDigimonDetailQuery(digimonId as string);
 
 
   // 監聽 Digimon 詳細資料是否有更新，設定頁面佈局
@@ -62,12 +45,20 @@ export default function DigimonDetailPage() {
 
 
   // 錯誤頁面
-  if (!isLoading && hasError) {
+  if (isError) {
     return (
       <DetailErrorContent
-        retryHandler={getAndSetDigimonDetail}
+        retryHandler={refetch}
       />
-    )
+    );
+  }
+
+
+  // 網路斷線
+  if (isPaused) {
+    return (
+      <DetailOfflineContent/>
+    );
   }
 
 

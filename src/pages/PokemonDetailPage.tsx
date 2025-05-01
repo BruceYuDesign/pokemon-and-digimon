@@ -1,9 +1,7 @@
-import type { PokemonDetail } from '~/services/pokemonService';
-import { useState, useEffect, useCallback } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { usePageLayout } from '~/context/PageLayoutContext';
-import { useDetailCache } from '~/context/DetailCacheContext';
-import { getPokemonById } from '~/services/pokemonService';
+import { usePokemonDetailQuery } from '~/services/query/pokemonQuery';
 import { pokemonTypeColors } from '~/libs/theme';
 import DetailThumbnail from '~/components/Detail/DetailThumbnail';
 import DetailName from '~/components/Detail/DetailName';
@@ -11,6 +9,7 @@ import DetailTypes from '~/components/Detail/DetailTypes';
 import DetailValueLabel from '~/components/Detail/DetailValueLabel';
 import DetailProgressBar from '~/components/Detail/DetailProgressBar';
 import DetailErrorContent from '~/components/Detail/DetailErrorContent';
+import DetailOfflineContent from '~/components/Detail/DetailOfflineContent';
 
 
 /**
@@ -20,41 +19,18 @@ import DetailErrorContent from '~/components/Detail/DetailErrorContent';
 export default function PokemonDetailPage() {
   // 調用頁面佈局狀態
   const { setHeader } = usePageLayout();
-  // 調用角色詳細資料緩存
-  const { detailCache, setDetailCache } = useDetailCache();
   // 取得路由參數
   const { pokemonId } = useParams<{ pokemonId: string }>();
-  // 角色詳細資料（型別處理）
-  const pokemonDetail = detailCache as PokemonDetail;
-  // 是否讀取中
-  const [isLoading, setIsLoading] = useState(true);
-  // 是否有錯誤
-  const [hasError, setHasError] = useState(false);
 
 
-  // 取得並設定 Pokemon 詳細資料
-  const getAndSetPokemonDetail = useCallback(async () => {
-    setIsLoading(true);
-    try{
-      const pokemonDetail = await getPokemonById(pokemonId as string);
-      setDetailCache(pokemonDetail);
-      setHasError(false);
-    } catch {
-      setHasError(true);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [pokemonId]);
-
-
-  // 頁面載入時，若未有緩存，則取得角色詳細資料
-  useEffect(() => {
-    if (detailCache) {
-      setIsLoading(false);
-    } else {
-      getAndSetPokemonDetail();
-    }
-  }, []);
+  // 取得 Pokemon 詳細資料
+  const {
+    data: pokemonDetail,
+    isLoading,
+    isError,
+    isPaused,
+    refetch,
+  } = usePokemonDetailQuery(pokemonId as string);
 
 
   // 監聽 Pokemon 詳細資料是否有更新，設定頁面佈局
@@ -70,11 +46,19 @@ export default function PokemonDetailPage() {
 
 
   // 錯誤頁面
-  if (!isLoading && hasError) {
+  if (isError) {
     return (
       <DetailErrorContent
-        retryHandler={getAndSetPokemonDetail}
+        retryHandler={refetch}
       />
+    );
+  }
+
+
+  // 網路斷線
+  if (isPaused) {
+    return (
+      <DetailOfflineContent/>
     );
   }
 

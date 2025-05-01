@@ -1,9 +1,8 @@
-import type { DigimonItem } from '~/services/digimonService';
-import { useState, useRef, useEffect } from 'react';
+import { Fragment, useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getDigimons } from '~/services/digimonService';
+import { useDigimonListQuery } from '~/services/query/digimonQuery';
 import { usePageLayout } from '~/context/PageLayoutContext';
-import { useListCache } from '~/context/ListCacheContext';
+import { useScrollCache } from '~/context/ScrollCacheContext';
 import ListView from '~/components/ListView';
 import CharacterCard from '~/components/CharacterCard';
 
@@ -18,52 +17,29 @@ export default function DigimonListPage() {
   // 調用頁面佈局狀態
   const { setHeader } = usePageLayout();
   // 調用清單資料緩存
-  const listCache = useListCache();
-  // 鎖定請求，用於防止重複請求
-  const lockedRequest = useRef<boolean>(false);
-  // 是否讀取中
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  // 是否有錯誤
-  const [hasError, setHasError] = useState<boolean>(false);
+  const { scrollCache } = useScrollCache();
 
 
-  // 取得並設定 Digimon 列表
-  const getAndSetDigimons = async (getDigimonsUrl?: string) => {
-    if (lockedRequest.current) return;
-    lockedRequest.current = true;
-    setIsLoading(true);
-    try {
-      const data = await getDigimons(getDigimonsUrl);
-      listCache.setItems(prevDigimons => [
-        ...prevDigimons,
-        ...data.content,
-      ]);
-      listCache.nextPageUrl.current = data.pageable.nextPage;
-      setHasError(false);
-    } catch {
-      setHasError(true);
-    } finally {
-      lockedRequest.current = false;
-      setIsLoading(false);
-    }
-  }
-
-
-  // 下一頁處理函式
-  const nextPageHandler = () => {
-    if (!listCache.nextPageUrl.current) return;
-    getAndSetDigimons(listCache.nextPageUrl.current);
-  }
+  // 取得 Digimons 清單
+  const {
+    data: digimonsData,
+    isFetching,
+    isError,
+    isPaused,
+    fetchNextPage,
+    hasNextPage,
+  } = useDigimonListQuery();
 
 
   // 角色卡片點擊處理函式
-  const handleCardClick = async (digimonItem: DigimonItem) => {
-    navigate(`/digimon/${digimonItem.id}`);
+  const handleCardClick = async (digimonId: string | number) => {
+    scrollCache.current = window.scrollY;
+    navigate(`/digimon/${digimonId}`);
   }
 
 
   // 在首次載入頁面時執行
-  useEffect(() => {
+  useLayoutEffect(() => {
     // 設定頁首
     setHeader({
       textColor: '#FFFFFF',
@@ -73,39 +49,39 @@ export default function DigimonListPage() {
       pageName: 'Digimon',
     });
 
-    // 第一次載入頁面
-    if (!listCache.items.length) {
-      getAndSetDigimons();
-    }
-
     // 回到上次捲動位置
-    window.scrollTo(0, listCache.scrollY.current);
-
-    // 記錄捲動位置
-    const setScrollYCache = () => {
-      listCache.scrollY.current = window.scrollY;
-    }
-    window.addEventListener('scroll', setScrollYCache);
-    return () => window.removeEventListener('scroll', setScrollYCache);
+    window.scrollTo(0, scrollCache.current);
   }, []);
 
 
   return (
     <ListView
-      nextPageHandler={nextPageHandler}
-      isLoading={isLoading}
-      hasError={hasError}
+      nextPageHandler={fetchNextPage}
+      isFetching={isFetching}
+      isError={isError}
+      isPaused={isPaused}
+      hasNextPage={hasNextPage}
     >
-      {(listCache.items as Array<DigimonItem>).map((digimonItem, index) => (
-        <CharacterCard
-          key={index}
-          name={digimonItem.name}
-          thumbnail={digimonItem.image}
-          textColor='#000000'
-          backgroundColor='#FFFFFF'
-          onClick={() => handleCardClick(digimonItem)}
-        />
-      ))}
+      {
+        digimonsData?.pages?.map((page, index) => (
+          <Fragment
+            key={index}
+          >
+            {
+              page.results.map((digimonItem, index) => (
+                <CharacterCard
+                  key={index}
+                  name={digimonItem.name}
+                  thumbnail={digimonItem.thumbnail}
+                  textColor='#000000'
+                  backgroundColor='#FFFFFF'
+                  onClick={() => handleCardClick(digimonItem.id)}
+                />
+              ))
+            }
+          </Fragment>
+        ))
+      }
     </ListView>
   );
 }

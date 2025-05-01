@@ -13,28 +13,15 @@
 
 > ✅ 解法：透過 `IntersectionObserver` 偵測元件是否進入視窗範圍，僅渲染可視區域的元件內容，提升效能並降低記憶體消耗。
 
-![scroll-infinity](./images/scroll-infinity.png)
+![scroll-infinity](./images/scroll-infinity.jpg)
 
 ---
 
 ## 避免重複 API 請求
 
-### Pokemon Detail 頁面資料快取
+因爲有大量角色的資料請求，且使用者會經常切換頁面，若不加控制，將造成大量重複請求與效能問題。
 
-Pokemon 的 List API 不含圖片，需額外呼叫每筆 Detail API；Digimon 則無此問題。
-
-| 資料來源 | 是否含圖片 |
-|----------|------------|
-| Pokemon  | ❌         |
-| Digimon  | ✅         |
-
-> ✅ 解法：在 `/pokemon` 頁面載入時預先快取 Detail 資料至 React Context，點擊進入 `/pokemon/:id` 詳細頁時先檢查快取，避免重複請求。
-
-### Detail 返回 List 頁面，維持狀態
-
-從 Detail 返回 List 頁面時，若重新請求 List API 並重置捲動位置，將影響使用體驗。
-
-> ✅ 解法：在 List 頁面時將資料與 scroll position 快取至 Context，返回時恢復原狀，無需重新請求。
+> ✅ 解法：導入 React Query，將暫存 API 請求的邏輯與狀態，避免重複請求與狀態錯誤。
 
 ---
 
@@ -44,7 +31,8 @@ API 載入時間不可避免，若畫面完全空白將造成使用者困惑。
 
 > ✅ 解法：導入 Skeleton UI，在資料未到前提供佔位視覺，提升使用者感知效能與信任感。
 
-![skeleton-loading](./images/skeleton-loading.png)
+![skeleton-loading-1](./images/skeleton-loading-1.jpg)
+![skeleton-loading-2](./images/skeleton-loading-2.jpg)
 
 ---
 
@@ -52,6 +40,7 @@ API 載入時間不可避免，若畫面完全空白將造成使用者困惑。
 
 API 請求可能因網路或伺服器問題失敗。
 
-> ✅ 解法：統一處理錯誤回應，顯示清楚錯誤訊息並提供「重試」按鈕，避免中斷操作流程。
+> ✅ 解法：請求錯誤統一處理，顯示吐司訊息；頁面載入錯誤提示錯誤重試按鈕；網路離線顯示提示訊息。
 
-![error-handler](./images/error-handler.png)
+![error-handler](./images/error-handler.jpg)
+![offline-handler](./images/offline-handler.jpg)

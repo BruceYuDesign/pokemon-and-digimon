@@ -1,18 +1,23 @@
 import { Outlet } from 'react-router-dom';
-import { ListCacheProvider } from '~/context/ListCacheContext';
-import { DetailCacheProvider } from '~/context/DetailCacheContext';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ScrollCacheProvider } from '~/context/ScrollCacheContext';
 
 
 /**
  * Pokemon 的版面佈局，包含清單與角色詳細資料緩存
  * @function PokemonLayout
- */
+*/
 export default function PokemonLayout() {
+  const queryClient = new QueryClient();
+
+
   return (
-    <ListCacheProvider>
-      <DetailCacheProvider>
+    <QueryClientProvider
+      client={queryClient}
+    >
+      <ScrollCacheProvider>
         <Outlet />
-      </DetailCacheProvider>
-    </ListCacheProvider>
+      </ScrollCacheProvider>
+    </QueryClientProvider>
   );
 }
