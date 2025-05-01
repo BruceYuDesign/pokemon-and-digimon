@@ -1,11 +1,17 @@
 import { requestHandler } from '~/libs/requestHandler';
+import { commonApiConfig } from '~/services/api/common';
+
+
+const {
+  ITEMS_PER_PAGE,
+} = commonApiConfig;
 
 
 interface DigimonListResult {
   /**
    * 角色清單
    */
-  content: Array<{
+  results: Array<{
     /**
      * 角色唯一識別碼
      */
@@ -21,36 +27,24 @@ interface DigimonListResult {
     /**
      * 角色圖片
      */
-    image: string;
+    thumbnail: string;
   }>;
   /**
    * 分頁資訊
    */
-  pageable: {
+  pagenation: {
     /**
      * 當前頁碼
      */
-    currentPage: number;
-    /**
-     * 該頁的角色數量
-     */
-    elementsOnPage: number;
-    /**
-     * 角色總數
-     */
-    totalElements: number;
+    page: number;
     /**
      * 總頁數
      */
     totalPages: number;
     /**
-     * 上一頁請求網址
+     * 下一頁頁碼
      */
-    previousPage: string;
-    /**
-     * 下一頁請求網址
-     */
-    nextPage: string;
+    nextPage?: number;
   }
 }
 
@@ -79,7 +73,26 @@ interface DigimonDetailResult {
 }
 
 
-// 未有完整 API 說明
+// 後端回傳 digimon list 格式
+interface DigimonListResponse {
+  content: Array<{
+    id: number | string;
+    name: string;
+    href: string;
+    image: string;
+  }>;
+  pageable: {
+    currentPage: number;
+    elementsOnPage: number;
+    totalElements: number;
+    totalPages: number;
+    previousPage: string;
+    nextPage: string;
+  }
+}
+
+
+// 後端回傳 digimon detail 格式
 interface DigimonDetailResponse {
   id: number;
   name: string;
@@ -142,14 +155,27 @@ const baseUrl = 'https://digi-api.com/api/v1/digimon';
  * 取得 Digimon 清單資料
  * @function getDigimons
  * @param {number?} page - 請求頁碼，未填則請求第一頁
- * @returns {Promise<Digimons>} - Digimon 清單
+ * @returns {Promise<DigimonListResult>} - Digimon 清單
  */
 export async function getDigimons(page?: number): Promise<DigimonListResult> {
-  const data = await requestHandler({
-    url: `${baseUrl}?page=${page || 0}&pageSize=18`,
+  const data: DigimonListResponse = await requestHandler({
+    url: `${baseUrl}?page=${page || 0}&pageSize=${ITEMS_PER_PAGE}`,
   });
 
-  return data;
+  const { currentPage, totalPages } = data.pageable;
+  const results = data.content.map(({ image, ...others }) => ({
+    thumbnail: image,
+    ...others,
+  }));
+
+  return {
+    results,
+    pagenation: {
+      page: currentPage,
+      totalPages: totalPages,
+      nextPage: currentPage < totalPages ? currentPage + 1 : undefined,
+    },
+  };
 }
 
 
@@ -157,7 +183,7 @@ export async function getDigimons(page?: number): Promise<DigimonListResult> {
  * 使用 url 取得單一 Digimon 詳細資料
  * @function getDigimonByUrl
  * @param {string} url - 請求網址
- * @returns {Promise<DigimonDetail>} - Digimon 詳細資料
+ * @returns {Promise<DigimonDetailResult>} - Digimon 詳細資料
  */
 export async function getDigimonByUrl(url: string): Promise<DigimonDetailResult> {
   const data: DigimonDetailResponse = await requestHandler({ url });

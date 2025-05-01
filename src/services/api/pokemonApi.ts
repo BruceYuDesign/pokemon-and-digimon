@@ -1,21 +1,15 @@
 import type { Pokemon } from '@bgoff1/pokeapi-types';
 import { requestHandler } from '~/libs/requestHandler';
 import { pokemonTypeColors } from '~/libs/theme';
+import { commonApiConfig } from '~/services/api/common';
+
+
+const {
+  ITEMS_PER_PAGE,
+} = commonApiConfig;
 
 
 interface PokemonListResult {
-  /**
-   * 總數量
-   */
-  count: number;
-  /**
-   * 下一頁請求網址
-   */
-  next?: string;
-  /**
-   * 上一頁請求網址
-   */
-  previois?: string;
   /**
    * 角色清單
    */
@@ -29,6 +23,23 @@ interface PokemonListResult {
      */
     url: string;
   }>;
+  /**
+   * 分頁資訊
+   */
+  pagenation: {
+    /**
+     * 當前頁碼
+     */
+    page: number;
+    /**
+     * 總頁數
+     */
+    totalPages: number;
+    /**
+     * 下一頁頁碼
+     */
+    nextPage?: number;
+  }
 }
 
 
@@ -84,22 +95,23 @@ interface PokemonDetailResult {
 }
 
 
+// 後端回傳 pokemon list 格式
+interface PokemonListResponse {
+  count: number;
+  next?: string;
+  previois?: string;
+  results: Array<{
+    name: string;
+    url: string;
+  }>;
+}
+
+
+// 後端回傳 pokemon detail 格式
 interface PokemonDetailResponse extends Pokemon {
-  /**
-   * 角色圖片（並非雪碧圖）
-   */
   sprites: Pokemon['sprites'] & {
-    /**
-     * 其他角色圖片
-     */
     other?: {
-      /**
-       * 官方藝術作品
-       */
       ['official-artwork']?: {
-        /**
-         * 角色正面圖片
-         */
         front_default?: string;
       }
     }
@@ -126,11 +138,20 @@ const baseUrl = 'https://pokeapi.co/api/v2/pokemon';
  * @returns {Pokemons} - Pokemon 清單
  */
 export async function getPokemons(page?: number): Promise<PokemonListResult> {
-  const data = await requestHandler({
-    url: `${baseUrl}?offset=${(page || 0) * 18}&limit=18`,
+  const currentPage = page || 0;
+
+  const data: PokemonListResponse = await requestHandler({
+    url: `${baseUrl}?offset=${currentPage * ITEMS_PER_PAGE}&limit=${ITEMS_PER_PAGE}`,
   });
 
-  return data;
+  return {
+    results: data.results,
+    pagenation: {
+      page: currentPage,
+      totalPages: Math.ceil(data.count / ITEMS_PER_PAGE),
+      nextPage: data.next ? (currentPage + 1) : undefined,
+    },
+  };
 }
 
 

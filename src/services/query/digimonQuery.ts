@@ -1,11 +1,12 @@
 import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
 import { getDigimons, getDigimonById } from '~/services/api/digimonApi';
+import { commonQueryConfig } from '~/services/query/common';
 
 
-// 緩存時間
-const staleTime = 1000 * 60 * 5;
-// 錯誤重試
-const retry = false;
+const {
+  STALE_TIME,
+  RETRY,
+} = commonQueryConfig;
 
 
 /**
@@ -17,8 +18,8 @@ export function useDigimonDetailQuery(digimonId: string) {
   return useQuery({
     queryKey: ['digimon-detail', digimonId],
     queryFn: () => getDigimonById(digimonId),
-    staleTime,
-    retry,
+    staleTime: STALE_TIME,
+    retry: RETRY,
   });
 }
 
@@ -32,12 +33,8 @@ export function useDigimonListQuery() {
     queryKey: ['digimon-list'],
     queryFn: ({ pageParam }) => getDigimons(pageParam),
     initialPageParam: 0,
-    getNextPageParam: ({ pageable }) => {
-      return pageable.currentPage <= pageable.totalPages
-        ? pageable.currentPage + 1
-        : undefined;
-    },
-    staleTime,
-    retry,
+    getNextPageParam: ({ pagenation }) => pagenation.nextPage,
+    staleTime: STALE_TIME,
+    retry: RETRY,
   });
 }

@@ -66,11 +66,11 @@ export default function DigimonListPage() {
             key={index}
           >
             {
-              page.content.map((digimonItem, index) => (
+              page.results.map((digimonItem, index) => (
                 <CharacterCard
                   key={index}
                   name={digimonItem.name}
-                  thumbnail={digimonItem.image}
+                  thumbnail={digimonItem.thumbnail}
                   textColor='#000000'
                   backgroundColor='#FFFFFF'
                   onClick={() => handleCardClick(digimonItem.id)}

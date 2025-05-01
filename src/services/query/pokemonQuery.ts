@@ -1,11 +1,12 @@
 import { useQueryClient, useQuery, useInfiniteQuery } from '@tanstack/react-query';
 import { getPokemons, getPokemonById } from '~/services/api/pokemonApi';
+import { commonQueryConfig } from '~/services/query/common';
 
 
-// 緩存時間
-const staleTime = 1000 * 60 * 5;
-// 錯誤重試
-const retry = false;
+const {
+  STALE_TIME,
+  RETRY,
+} = commonQueryConfig;
 
 
 /**
@@ -17,8 +18,8 @@ export function usePokemonDetailQuery(pokemonId: string) {
   return useQuery({
     queryKey: ['pokemon-detail', pokemonId],
     queryFn: () => getPokemonById(pokemonId),
-    staleTime,
-    retry,
+    staleTime: STALE_TIME,
+    retry: RETRY,
   });
 }
 
@@ -31,7 +32,7 @@ export function usePokemonListQuery() {
   const queryClient = useQueryClient();
 
   const queryFn = async (page?: number) => {
-    const { results, next } = await getPokemons(page);
+    const { results, pagenation } = await getPokemons(page);
     const pokemonDetails = await Promise.all(
       results.map(async({ url }) => {
         const pokemonId = url.split('/').at(-2);
@@ -45,7 +46,7 @@ export function usePokemonListQuery() {
     );
     return {
       content: pokemonDetails,
-      next,
+      pagenation,
     }
   }
 
@@ -53,13 +54,8 @@ export function usePokemonListQuery() {
     queryKey: ['pokemon-list'],
     queryFn: ({ pageParam }) => queryFn(pageParam),
     initialPageParam: 0,
-    getNextPageParam: ({ next }) => {
-      if (!next) return undefined;
-      const { searchParams } = new URL(next);
-      const currentPage = Math.ceil(parseInt(searchParams.get('offset') || '0') / 18);
-      return currentPage;
-    },
-    staleTime,
-    retry,
+    getNextPageParam: ({ pagenation }) => pagenation.nextPage,
+    staleTime: STALE_TIME,
+    retry: RETRY,
   });
 }
