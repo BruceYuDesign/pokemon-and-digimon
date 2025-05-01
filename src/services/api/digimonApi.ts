@@ -1,31 +1,28 @@
 import { requestHandler } from '~/libs/requestHandler';
 
 
-export interface DigimonItem {
-  /**
-   * 角色唯一識別碼
-   */
-  id: number | string;
-  /**
-   * 角色名稱
-   */
-  name: string;
-  /**
-   * 角色詳細資料的請求網址
-   */
-  href: string;
-  /**
-   * 角色圖片
-   */
-  image: string;
-}
-
-
-interface Digimons {
+interface DigimonListResult {
   /**
    * 角色清單
    */
-  content: Array<DigimonItem>;
+  content: Array<{
+    /**
+     * 角色唯一識別碼
+     */
+    id: number | string;
+    /**
+     * 角色名稱
+     */
+    name: string;
+    /**
+     * 角色詳細資料的請求網址
+     */
+    href: string;
+    /**
+     * 角色圖片
+     */
+    image: string;
+  }>;
   /**
    * 分頁資訊
    */
@@ -58,8 +55,32 @@ interface Digimons {
 }
 
 
+interface DigimonDetailResult {
+  /**
+   * 角色的唯一識別碼
+   */
+  id: number | string;
+  /**
+   * 角色名稱
+   */
+  name: string;
+  /**
+   * 角色圖片
+   */
+  thumbnail: string;
+  /**
+   * 角色屬性
+   */
+  types: Array<string>;
+  /**
+   * 角色描述
+   */
+  description: string;
+}
+
+
 // 未有完整 API 說明
-interface Digimon {
+interface DigimonDetailResponse {
   id: number;
   name: string;
   xAntibody: boolean;
@@ -113,30 +134,6 @@ interface Digimon {
 }
 
 
-export interface DigimonDetail {
-  /**
-   * 角色的唯一識別碼
-   */
-  id: number | string;
-  /**
-   * 角色名稱
-   */
-  name: string;
-  /**
-   * 角色圖片
-   */
-  thumbnail: string;
-  /**
-   * 角色屬性
-   */
-  types: Array<string>;
-  /**
-   * 角色描述
-   */
-  description: string;
-}
-
-
 // Digimon 基本請求網址
 const baseUrl = 'https://digi-api.com/api/v1/digimon';
 
@@ -144,12 +141,12 @@ const baseUrl = 'https://digi-api.com/api/v1/digimon';
 /**
  * 取得 Digimon 清單資料
  * @function getDigimons
- * @param {string?} url - 請求網址，未填則請求第一頁
+ * @param {number?} page - 請求頁碼，未填則請求第一頁
  * @returns {Promise<Digimons>} - Digimon 清單
  */
-export async function getDigimons(url?: string): Promise<Digimons> {
-  const data: Digimons = await requestHandler({
-    url: url || `${baseUrl}?page=0&pageSize=18`,
+export async function getDigimons(page?: number): Promise<DigimonListResult> {
+  const data = await requestHandler({
+    url: `${baseUrl}?page=${page || 0}&pageSize=18`,
   });
 
   return data;
@@ -162,8 +159,8 @@ export async function getDigimons(url?: string): Promise<Digimons> {
  * @param {string} url - 請求網址
  * @returns {Promise<DigimonDetail>} - Digimon 詳細資料
  */
-export async function getDigimonByUrl(url: string): Promise<DigimonDetail> {
-  const data: Digimon = await requestHandler({ url });
+export async function getDigimonByUrl(url: string): Promise<DigimonDetailResult> {
+  const data: DigimonDetailResponse = await requestHandler({ url });
 
   return {
     id: data.id,
@@ -181,7 +178,7 @@ export async function getDigimonByUrl(url: string): Promise<DigimonDetail> {
  * @param {string} id - 請求的 id
  * @returns {Promise<DigimonDetail>} - Digimon 詳細資料
  */
-export async function getDigimonById(id: string): Promise<DigimonDetail> {
+export async function getDigimonById(id: string): Promise<DigimonDetailResult> {
   const requestUrl = `${baseUrl}/${id}`;
   return await getDigimonByUrl(requestUrl);
 }

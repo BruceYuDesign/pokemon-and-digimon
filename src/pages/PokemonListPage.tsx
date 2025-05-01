@@ -1,10 +1,8 @@
-import type { PokemonDetail } from '~/services/pokemonService';
-import { useState, useRef, useEffect } from 'react';
+import { Fragment, useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getPokemons, getPokemonByUrl } from '~/services/pokemonService';
+import { usePokemonListQuery } from '~/services/query/pokemonQuery';
 import { usePageLayout } from '~/context/PageLayoutContext';
-import { useListCache } from '~/context/ListCacheContext';
-import { useDetailCache } from '~/context/DetailCacheContext';
+import { useScrollCache } from '~/context/ScrollCacheContext';
 import ListView from '~/components/ListView';
 import CharacterCard from '~/components/CharacterCard';
 
@@ -19,58 +17,28 @@ export default function PokemonListPage() {
   // 調用頁面佈局狀態
   const { setHeader } = usePageLayout();
   // 調用清單資料緩存
-  const listCache = useListCache();
-  // 調用角色詳細資料緩存
-  const { setDetailCache } = useDetailCache();
-  // 鎖定請求，用於防止重複請求
-  const lockedRequest = useRef<boolean>(false);
-  // 是否讀取中
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  // 是否有錯誤
-  const [hasError, setHasError] = useState<boolean>(false);
+  const { scrollCache } = useScrollCache();
 
 
-  // 取得並設定 Pokemon 列表
-  const getAndSetPokemons = async (getPokemonsUrl?: string) => {
-    if (lockedRequest.current) return;
-    lockedRequest.current = true;
-    setIsLoading(true);
-    try {
-      const data = await getPokemons(getPokemonsUrl);
-      const newPokemons = await Promise.all(
-        data.results.map(({ url }) => getPokemonByUrl(url))
-      );
-      listCache.setItems(prevPokemons => [
-        ...prevPokemons,
-        ...newPokemons,
-      ]);
-      listCache.nextPageUrl.current = data.next;
-      setHasError(false);
-    } catch {
-      setHasError(true);
-    } finally {
-      lockedRequest.current = false;
-      setIsLoading(false);
-    }
-  }
-
-
-  // 下一頁處理函式
-  const nextPageHandler = () => {
-    if (!listCache.nextPageUrl.current) return;
-    getAndSetPokemons(listCache.nextPageUrl.current);
-  }
+  // 取得並設定 Pokemon 清單
+  const {
+    data: pokemonsData,
+    isFetching,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+  } = usePokemonListQuery();
 
 
   // 角色卡片點擊處理函式
-  const handleCardClick = async (pokemonDetail: PokemonDetail) => {
-    setDetailCache(pokemonDetail);
-    navigate(`/pokemon/${pokemonDetail.id}`);
+  const handleCardClick = async (pokemonId: string | number) => {
+    scrollCache.current = window.scrollY;
+    navigate(`/pokemon/${pokemonId}`);
   }
 
 
   // 在首次載入頁面時執行
-  useEffect(() => {
+  useLayoutEffect(() => {
     // 設定頁首
     setHeader({
       textColor: '#FFFFFF',
@@ -80,39 +48,38 @@ export default function PokemonListPage() {
       pageName: 'Pokemon',
     });
 
-    // 第一次載入頁面
-    if (!listCache.items.length) {
-      getAndSetPokemons();
-    }
-
     // 回到上次捲動位置
-    window.scrollTo(0, listCache.scrollY.current);
-
-    // 記錄捲動位置
-    const setScrollYCache = () => {
-      listCache.scrollY.current = window.scrollY;
-    }
-    window.addEventListener('scroll', setScrollYCache);
-    return () => window.removeEventListener('scroll', setScrollYCache);
+    window.scrollTo(0, scrollCache.current);
   }, []);
 
 
   return (
     <ListView
-      nextPageHandler={nextPageHandler}
-      isLoading={isLoading}
-      hasError={hasError}
+      nextPageHandler={fetchNextPage}
+      isFetching={isFetching}
+      isError={isError}
+      hasNextPage={hasNextPage}
     >
-      {(listCache.items as Array<PokemonDetail>).map((pokemonDetail, index) => (
-        <CharacterCard
-          key={index}
-          name={pokemonDetail.name}
-          thumbnail={pokemonDetail.thumbnail}
-          textColor='#FFFFFF'
-          backgroundColor={pokemonDetail.color}
-          onClick={() => handleCardClick(pokemonDetail)}
-        />
-      ))}
+      {
+        pokemonsData?.pages?.map((page, index) => (
+          <Fragment
+            key={index}
+          >
+            {
+              page.content.map((pokemonItem, index) => (
+                <CharacterCard
+                  key={index}
+                  name={pokemonItem.name}
+                  thumbnail={pokemonItem.thumbnail}
+                  textColor='#FFFFFF'
+                  backgroundColor={pokemonItem.color}
+                  onClick={() => handleCardClick(pokemonItem.id)}
+                />
+              ))
+            }
+          </Fragment>
+        ))
+      }
     </ListView>
   );
 }

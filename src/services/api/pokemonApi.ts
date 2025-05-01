@@ -1,9 +1,9 @@
-import type { Pokemon as OriginPokemon } from '@bgoff1/pokeapi-types';
+import type { Pokemon } from '@bgoff1/pokeapi-types';
 import { requestHandler } from '~/libs/requestHandler';
 import { pokemonTypeColors } from '~/libs/theme';
 
 
-interface Pokemons {
+interface PokemonListResult {
   /**
    * 總數量
    */
@@ -11,11 +11,11 @@ interface Pokemons {
   /**
    * 下一頁請求網址
    */
-  next: string;
+  next?: string;
   /**
    * 上一頁請求網址
    */
-  previois: string;
+  previois?: string;
   /**
    * 角色清單
    */
@@ -32,30 +32,7 @@ interface Pokemons {
 }
 
 
-interface Pokemon extends OriginPokemon {
-  /**
-   * 角色圖片（並非雪碧圖）
-   */
-  sprites: OriginPokemon['sprites'] & {
-    /**
-     * 其他角色圖片
-     */
-    other?: {
-      /**
-       * 官方藝術作品
-       */
-      ['official-artwork']?: {
-        /**
-         * 角色正面圖片
-         */
-        front_default?: string;
-      };
-    };
-  };
-}
-
-
-export interface PokemonDetail {
+interface PokemonDetailResult {
   /**
    * 角色的唯一識別碼
    */
@@ -107,6 +84,29 @@ export interface PokemonDetail {
 }
 
 
+interface PokemonDetailResponse extends Pokemon {
+  /**
+   * 角色圖片（並非雪碧圖）
+   */
+  sprites: Pokemon['sprites'] & {
+    /**
+     * 其他角色圖片
+     */
+    other?: {
+      /**
+       * 官方藝術作品
+       */
+      ['official-artwork']?: {
+        /**
+         * 角色正面圖片
+         */
+        front_default?: string;
+      }
+    }
+  }
+}
+
+
 // 所需的 Stat 名稱
 type StatName = 'hp' | 'attack' | 'defense' | 'speed';
 
@@ -122,12 +122,12 @@ const baseUrl = 'https://pokeapi.co/api/v2/pokemon';
 /**
  * 取得 Pokemon 清單資料
  * @function getPokemons
- * @param {string?} url - 請求網址，未填則請求第一頁
- * @returns {Promise<Pokemons>} - Pokemon 清單
+ * @param {number?} page - 請求頁碼，未填則請求第一頁
+ * @returns {Pokemons} - Pokemon 清單
  */
-export async function getPokemons(url?: string): Promise<Pokemons> {
+export async function getPokemons(page?: number): Promise<PokemonListResult> {
   const data = await requestHandler({
-    url: url || `${baseUrl}?limit=18`,
+    url: `${baseUrl}?offset=${(page || 0) * 18}&limit=18`,
   });
 
   return data;
@@ -140,8 +140,8 @@ export async function getPokemons(url?: string): Promise<Pokemons> {
  * @param {string} url - 請求網址
  * @returns {Promise<PokemonDetail>} - Pokemon 詳細資料
  */
-export async function getPokemonByUrl(url: string): Promise<PokemonDetail> {
-  const data: Pokemon = await requestHandler({ url });
+export async function getPokemonByUrl(url: string): Promise<PokemonDetailResult> {
+  const data: PokemonDetailResponse = await requestHandler({ url });
 
   // 取出需要的資料
   const { hp, attack, defense, speed } = data.stats.reduce(
@@ -177,7 +177,7 @@ export async function getPokemonByUrl(url: string): Promise<PokemonDetail> {
  * @param {string} id - 請求的 id
  * @returns {Promise<PokemonDetail>} - Pokemon 詳細資料
  */
-export async function getPokemonById(id: string): Promise<PokemonDetail> {
+export async function getPokemonById(id: string): Promise<PokemonDetailResult> {
   const requestUrl = `${baseUrl}/${id}`;
   return await getPokemonByUrl(requestUrl);
 }
