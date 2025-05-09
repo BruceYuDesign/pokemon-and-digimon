@@ -3,6 +3,7 @@ import PokemonCoverImage from '~/assets/images/pokemon-cover.png';
 import DigimonCoverImage from '~/assets/images/digimon-cover.png';
 
 
+// 頁面連結
 const pageLinks = [
   {
     href: '/pokemon',
@@ -19,12 +20,17 @@ const pageLinks = [
 ];
 
 
+/**
+ * 首頁
+ * @function HomePage
+ */
 export default function HomePage() {
   return (
     <div
       className='util-container
       min-h-dvh px-8 py-14 flex flex-col items-center justify-center gap-14'
     >
+      {/* 頁面標題 */}
       <h1
         className='text-2xl text-center font-bold
         md:text-4xl
@@ -32,6 +38,7 @@ export default function HomePage() {
       >
         Pokemon Ｘ Digimon
       </h1>
+      {/* 連結 */}
       <div
         className='w-full grid grid-cols-1 auto-rows-max place-content-center gap-8
         sm:grid-cols-2'
