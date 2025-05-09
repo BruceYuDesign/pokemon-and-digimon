@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { FaQuestion } from 'react-icons/fa';
-import { AiOutlineLoading } from "react-icons/ai";
+import { AiOutlineLoading } from 'react-icons/ai';
 
 
 /**
@@ -43,15 +43,18 @@ export default function ImageWithStatus(props: ImageWithStatusProps) {
   const [isLoading, setIsLoading] = useState(true);
   // 是否讀取失敗
   const [isFailed, setIsFailed] = useState(false);
+  // 圖片元素
+  const imageRef = useRef<HTMLImageElement>(null);
   // 錯誤重試次數
   const retryCount = useRef(0);
 
 
   // 圖片讀取失敗
-  const imageOnError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+  const imageOnError = () => {
+    if (!imageRef.current) return;
     if (retryCount.current < ERROR_RETRY_LIMIT && props.src) {
       retryCount.current++;
-      event.currentTarget.src = props.src + '?retry=' + retryCount.current;
+      imageRef.current.src = props.src + '?retry=' + retryCount.current;
     } else {
       setIsLoading(false);
       setIsFailed(true);
@@ -65,21 +68,32 @@ export default function ImageWithStatus(props: ImageWithStatusProps) {
   }
 
 
+  // 使用者點擊重試
+  const handleUserRetry = () => {
+    if (!imageRef.current) return;
+    retryCount.current = 0;
+    setIsLoading(true);
+    setIsFailed(false);
+    imageRef.current.src = props.src || '';
+  }
+
+
   // 圖片狀態
   const imageStateContent = () => {
     // 讀取失敗或是沒連結
     if (isFailed || !props.src) {
       return (
         <FaQuestion
-          className='w-2/3 h-2/3 invert-25 opacity-25'
+          className='h-2/3 w-auto invert-25 opacity-25'
+          onClick={handleUserRetry}
         />
       );
     }
     // 讀取中
-    if (isLoading) {
+    else if (isLoading) {
       return (
         <AiOutlineLoading
-          className='w-2/3 h-2/3 invert-25 opacity-25 animate-spin'
+          className='h-2/3 w-auto invert-25 opacity-25 animate-spin'
           style={{
             animationDuration: '3s',
           }}
@@ -97,7 +111,8 @@ export default function ImageWithStatus(props: ImageWithStatusProps) {
       }
     >
       <img
-        className='h-full w-auto'
+        ref={imageRef}
+        className='h-full w-auto pointer-events-none'
         style={{
           opacity: isLoading || isFailed || !props.src ? 0 : 1,
         }}

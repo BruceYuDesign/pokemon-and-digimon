@@ -46,7 +46,7 @@ export default function DetailThumbnail(props: DetailThumbnailProps) {
       }}
     >
       <ImageWithStatus
-        className='h-2/3'
+        className='h-3/5'
         src={props.image}
         alt={props.alt}
       />
