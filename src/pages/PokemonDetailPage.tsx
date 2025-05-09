@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { usePageLayout } from '~/context/PageLayoutContext';
 import { usePokemonDetailQuery } from '~/services/query/pokemonQuery';
 import { pokemonTypeColors } from '~/libs/theme';
@@ -17,6 +17,8 @@ import DetailOfflineContent from '~/components/Detail/DetailOfflineContent';
  * @function PokemonDetailPage
  */
 export default function PokemonDetailPage() {
+  // 調用頁面導航
+  const navigate = useNavigate();
   // 調用頁面佈局狀態
   const { setHeader } = usePageLayout();
   // 取得路由參數
@@ -29,8 +31,15 @@ export default function PokemonDetailPage() {
     isLoading,
     isError,
     isPaused,
+    error,
     refetch,
   } = usePokemonDetailQuery(pokemonId as string);
+
+
+  // 重定向處理函式
+  const redirectHandler = () => {
+    navigate('/pokemon');
+  }
 
 
   // 監聽 Pokemon 詳細資料是否有更新，設定頁面佈局
@@ -50,6 +59,8 @@ export default function PokemonDetailPage() {
     return (
       <DetailErrorContent
         retryHandler={refetch}
+        redirectHandler={redirectHandler}
+        error={error}
       />
     );
   }
