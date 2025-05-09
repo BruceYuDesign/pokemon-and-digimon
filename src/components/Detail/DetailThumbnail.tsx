@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { FaQuestion } from 'react-icons/fa';
+import ImageWithStatus from '~/components/ImageWithStatus';
 
 
 interface DetailThumbnailProps {
@@ -28,17 +27,6 @@ interface DetailThumbnailProps {
  * @param {DetailThumbnailProps} props
  */
 export default function DetailThumbnail(props: DetailThumbnailProps) {
-  // 是否有錯誤
-  const [hasError, setHasError] = useState(false);
-
-
-  // 圖片讀取失敗
-  const imageOnError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    event.currentTarget.onerror = null;
-    setHasError(true);
-  }
-
-
   // 讀取骨架
   if (props.isLoading) {
     return (
@@ -54,27 +42,14 @@ export default function DetailThumbnail(props: DetailThumbnailProps) {
     <div
       className='flex items-center justify-center h-[280px] rounded-b-4xl'
       style={{
-        backgroundColor: !hasError
-          ? props.backgroundColor
-          : 'var(--color-background-alt)',
+        backgroundColor: props.backgroundColor,
       }}
     >
-      {
-        (props.image && !hasError) ? (
-          // 顯示角色圖片
-          <img
-            className='h-2/3 w-auto pointer-events-none'
-            src={props.image}
-            alt={props.alt || 'Unknown'}
-            onError={imageOnError}
-          />
-        ) : (
-          // 顯示問號
-          <FaQuestion
-            className='w-1/2 h-1/2 text-foreground opacity-25'
-          />
-        )
-      }
+      <ImageWithStatus
+        className='h-2/3'
+        src={props.image}
+        alt={props.alt}
+      />
     </div>
   );
 }

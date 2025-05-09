@@ -1,6 +1,5 @@
-import { useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { FaQuestion } from 'react-icons/fa';
+import ImageWithStatus from '~/components/ImageWithStatus';
 
 
 export interface CharacterCardProps {
@@ -33,23 +32,12 @@ export interface CharacterCardProps {
  * @param {CharacterCardProps} props
  */
 export default function CharacterCard(props: CharacterCardProps) {
-  // 是否有錯誤
-  const [hasError, setHasError] = useState(false);
-
-
   // 計算是否位於視窗內
   const { ref, inView } = useInView({
     triggerOnce: false,
     threshold: 0,
     rootMargin: '100px 0px 100px 0px',
   });
-
-
-  // 圖片讀取失敗
-  const imageOnError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    event.currentTarget.onerror = null;
-    setHasError(true);
-  }
 
 
   return (
@@ -67,27 +55,11 @@ export default function CharacterCard(props: CharacterCardProps) {
             }}
           >
             {/* 圖片 */}
-            <div className='h-3/4 flex items-center justify-center'>
-              {
-                (props.thumbnail && !hasError) ? (
-                  // 顯示角色圖片
-                  <img
-                    className='h-3/4 w-auto object-contain pointer-events-none'
-                    src={props.thumbnail}
-                    alt={props.name || 'Unknown'}
-                    onError={imageOnError}
-                  />
-                ) : (
-                  // 顯示問號
-                  <FaQuestion
-                    className='w-1/2 h-1/2 opacity-25'
-                    style={{
-                      color: props.textColor,
-                    }}
-                  />
-                )
-              }
-            </div>
+            <ImageWithStatus
+              className='h-3/5 my-auto'
+              src={props.thumbnail}
+              alt={props.name}
+            />
             {/* 名稱 */}
             <h3
               className='h-1/4 shrink-0 text-center text-xl whitespace-nowrap text-ellipsis overflow-hidden'
