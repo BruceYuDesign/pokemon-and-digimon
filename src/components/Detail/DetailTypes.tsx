@@ -34,7 +34,7 @@ export default function DetailTypes(props: DetailTypesProps) {
 
 
   return (
-    <div className='flex flex-row gap-4 flex-wrap'>
+    <div className='flex flex-row items-center justify-center gap-4 flex-wrap'>
       {
         (props.types && props.types.length > 0) ? (
           // 含對應屬性

@@ -7,7 +7,7 @@ const {
 } = commonApiConfig;
 
 
-interface DigimonListResult {
+export interface DigimonListResult {
   /**
    * 角色清單
    */
@@ -49,7 +49,7 @@ interface DigimonListResult {
 }
 
 
-interface DigimonDetailResult {
+export interface DigimonDetailResult {
   /**
    * 角色的唯一識別碼
    */

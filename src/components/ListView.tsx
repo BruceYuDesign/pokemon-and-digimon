@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react';
 import { BiLoader } from 'react-icons/bi';
-import ErrorRetryButton from '~/components/ErrorRetryButton';
+import ErrorRetryButton from '~/components/ErrorButton/ErrorRetryButton';
 import OfflineMessage from '~/components/OfflineMessage';
 import CharacterCardsSkeleton from '~/components/CharacterCardsSkeleton';
 

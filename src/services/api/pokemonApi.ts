@@ -9,7 +9,7 @@ const {
 } = commonApiConfig;
 
 
-interface PokemonListResult {
+export interface PokemonListResult {
   /**
    * 角色清單
    */
@@ -43,7 +43,7 @@ interface PokemonListResult {
 }
 
 
-interface PokemonDetailResult {
+export interface PokemonDetailResult {
   /**
    * 角色的唯一識別碼
    */

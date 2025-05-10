@@ -1,3 +1,5 @@
+import type { AxiosError } from 'axios';
+import type { PokemonDetailResult } from '~/services/api/pokemonApi';
 import { useQueryClient, useQuery, useInfiniteQuery } from '@tanstack/react-query';
 import { getPokemons, getPokemonById } from '~/services/api/pokemonApi';
 import { commonQueryConfig } from '~/services/query/common';
@@ -15,7 +17,7 @@ const {
  * @param {string} pokemonId 角色 id
  */
 export function usePokemonDetailQuery(pokemonId: string) {
-  return useQuery({
+  return useQuery<PokemonDetailResult, AxiosError>({
     queryKey: ['pokemon-detail', pokemonId],
     queryFn: () => getPokemonById(pokemonId),
     staleTime: STALE_TIME,

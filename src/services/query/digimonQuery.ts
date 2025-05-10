@@ -1,3 +1,5 @@
+import type { AxiosError } from 'axios';
+import type { DigimonDetailResult } from '~/services/api/digimonApi';
 import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
 import { getDigimons, getDigimonById } from '~/services/api/digimonApi';
 import { commonQueryConfig } from '~/services/query/common';
@@ -15,7 +17,7 @@ const {
  * @param {string} digimonId 角色 id
  */
 export function useDigimonDetailQuery(digimonId: string) {
-  return useQuery({
+  return useQuery<DigimonDetailResult, AxiosError>({
     queryKey: ['digimon-detail', digimonId],
     queryFn: () => getDigimonById(digimonId),
     staleTime: STALE_TIME,
