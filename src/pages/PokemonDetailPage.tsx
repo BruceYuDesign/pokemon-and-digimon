@@ -1,3 +1,4 @@
+import type { DetailErrorContentProps } from '~/components/Detail/DetailErrorContent';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { usePageLayout } from '~/context/PageLayoutContext';
@@ -56,11 +57,20 @@ export default function PokemonDetailPage() {
 
   // 錯誤頁面
   if (isError) {
+    const errorActions: Record<number, DetailErrorContentProps> = {
+      404: {
+        errorHandler: redirectHandler,
+        errorButtonType : 'redirect',
+      },
+    }
+    const errorAction = errorActions[error.status as number] || {
+      errorHandler: refetch,
+      errorButtonType: 'retry',
+    }
     return (
       <DetailErrorContent
-        retryHandler={refetch}
-        redirectHandler={redirectHandler}
-        error={error}
+        errorHandler={errorAction.errorHandler}
+        errorButtonType={errorAction.errorButtonType}
       />
     );
   }

@@ -1,5 +1,6 @@
+import type { DetailErrorContentProps } from '~/components/Detail/DetailErrorContent';
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { usePageLayout } from '~/context/PageLayoutContext';
 import { useDigimonDetailQuery } from '~/services/query/digimonQuery';
 import { digimonTypeColors } from '~/libs/theme';
@@ -16,6 +17,8 @@ import DetailOfflineContent from '~/components/Detail/DetailOfflineContent';
  * @function DigimonDetailPage
  */
 export default function DigimonDetailPage() {
+  // 調用頁面導航
+  const navigate = useNavigate();
   // 調用頁面佈局狀態
   const { setHeader } = usePageLayout();
   // 取得路由參數
@@ -28,8 +31,15 @@ export default function DigimonDetailPage() {
     isLoading,
     isError,
     isPaused,
+    error,
     refetch,
   } = useDigimonDetailQuery(digimonId as string);
+
+
+  // 重定向處理函式
+  const redirectHandler = () => {
+    navigate('/digimon');
+  }
 
 
   // 監聽 Digimon 詳細資料是否有更新，設定頁面佈局
@@ -46,9 +56,21 @@ export default function DigimonDetailPage() {
 
   // 錯誤頁面
   if (isError) {
+    const errorActions: Record<number, DetailErrorContentProps> = {
+      // * Not Found 應回傳 404，但後端回傳 400
+      400: {
+        errorHandler: redirectHandler,
+        errorButtonType : 'redirect',
+      },
+    }
+    const errorAction = errorActions[error.status as number] || {
+      errorHandler: refetch,
+      errorButtonType: 'retry',
+    }
     return (
       <DetailErrorContent
-        retryHandler={refetch}
+        errorHandler={errorAction.errorHandler}
+        errorButtonType={errorAction.errorButtonType}
       />
     );
   }

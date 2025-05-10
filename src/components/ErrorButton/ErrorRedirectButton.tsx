@@ -1,4 +1,4 @@
-import { VscDebugRestart } from 'react-icons/vsc';
+import { FaArrowLeft } from 'react-icons/fa6';
 
 
 interface ErrorRedirectButtonProps {
@@ -17,11 +17,11 @@ interface ErrorRedirectButtonProps {
 export default function ErrorRedirectButton(props: ErrorRedirectButtonProps) {
   return (
     <button
-      className='flex flex-row items-center gap-2 px-6 py-1.5 rounded-full bg-foreground text-background'
+      className='flex flex-row items-center gap-2 px-6 py-1.5 rounded-full bg-foreground text-background cursor-pointer'
       onClick={props.redirectHandler}
       type='button'
     >
-      <VscDebugRestart
+      <FaArrowLeft
         className='w-5 h-5'
       />
       Redirect
