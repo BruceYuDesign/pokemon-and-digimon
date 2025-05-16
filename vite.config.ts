@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { defineConfig } from 'vite';
 import path from 'node:path';
 import react from '@vitejs/plugin-react-swc';
@@ -20,4 +21,9 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: '__tests__/setup.ts',
+  },
 });
