@@ -10,8 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@bgoff1/pokeapi-types": "^1.0.9",
-    "@tailwindcss/vite": "^4.1.4",
     "@tanstack/react-query": "^5.74.11",
     "axios": "^1.8.4",
     "material-react-toastify": "^10.0.5",
@@ -19,11 +17,12 @@
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
     "react-intersection-observer": "^9.16.0",
-    "react-router-dom": "^7.5.1",
-    "tailwindcss": "^4.1.4"
+    "react-router-dom": "^7.5.1"
   },
   "devDependencies": {
+    "@bgoff1/pokeapi-types": "^1.0.9",
     "@eslint/js": "^9.22.0",
+    "@tailwindcss/vite": "^4.1.7",
     "@types/node": "^22.14.1",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
@@ -35,6 +34,7 @@
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
     "path": "^0.12.7",
+    "tailwindcss": "^4.1.7",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.26.1",
     "vite": "^6.3.1"
