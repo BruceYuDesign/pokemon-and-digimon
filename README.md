@@ -2,7 +2,7 @@
 
 這是一個 Pokemon Ｘ Digimon 的角色圖鑑，使用 React + Vite + TypeScript 開發。
 
-可前往 [我做了哪些改進](./docs/what-i-improved.md) 查看優化的細節。
+可前往 [我做了哪些優化](./docs/what-i-improved.md) 查看優化的細節，或是觀看 [作品解說](https://drive.google.com/file/d/11w7U2iA7Z1d35PbWQCBh2BlPUoPx3Pq_/view?usp=sharing) 觀看完整的開發過程。
 
 **觀看網頁**
 
