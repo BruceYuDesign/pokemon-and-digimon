@@ -21,7 +21,10 @@ export default function DetailDescription(props: DetailDescriptionProps) {
   // 讀取骨架
   if (props.isLoading) {
     return (
-      <div className='w-full flex flex-col gap-4.5'>
+      <div
+        className='w-full flex flex-col gap-4.5'
+        data-testid='skeleton'
+      >
         <div
           className='util-skeleton
           rounded w-full h-4.5'
@@ -52,7 +55,10 @@ export default function DetailDescription(props: DetailDescriptionProps) {
 
 
   return (
-    <p className='text-lg leading-loose'>
+    <p
+      className='text-lg leading-loose'
+      data-testid='description'
+    >
       {props.description || 'No description available.'}
     </p>
   );

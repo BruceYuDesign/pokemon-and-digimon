@@ -15,7 +15,7 @@ describe('<DetailErrorContent/>', () => {
         errorHandler={mockErrorHandler}
       />
     );
-
+    // TODO 補 test id
     const element = screen.getByText('Retry');
     expect(element).toBeTruthy();
   });
@@ -29,7 +29,7 @@ describe('<DetailErrorContent/>', () => {
         errorHandler={mockErrorHandler}
       />
     );
-
+    // TODO 補 test id
     const element = screen.getByText('Redirect');
     expect(element).toBeTruthy();
   });
@@ -38,17 +38,15 @@ describe('<DetailErrorContent/>', () => {
   // 點選重試，應執行錯誤處理函式
   test('should call errorHandler when click retry button', () => {
     mockErrorHandler.mockClear();
-
     render(
       <DetailErrorContent
         errorButtonType='retry'
         errorHandler={mockErrorHandler}
       />
     );
-
+    // TODO 補 test id
     const retryButton = screen.getByRole('button');
     fireEvent.click(retryButton);
-
     expect(mockErrorHandler).toHaveBeenCalledTimes(1);
   });
 
@@ -56,17 +54,15 @@ describe('<DetailErrorContent/>', () => {
   // 點選重定向，應執行錯誤處理函式
   test('should call errorHandler when click redirect button', () => {
     mockErrorHandler.mockClear();
-
     render(
       <DetailErrorContent
         errorButtonType='redirect'
         errorHandler={mockErrorHandler}
       />
     );
-
+    // TODO 補 test id
     const redirectButton = screen.getByRole('button');
     fireEvent.click(redirectButton);
-
     expect(mockErrorHandler).toHaveBeenCalledTimes(1);
   });
 });

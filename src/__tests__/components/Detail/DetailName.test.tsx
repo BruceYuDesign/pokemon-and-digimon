@@ -3,31 +3,33 @@ import DetailName from '~/components/Detail/DetailName';
 
 
 describe('<DetailName/>', () => {
-  const text = 'Character Name';
+  const name = 'Character Name';
 
 
-  // 非讀取中，應顯示文字
-  test('should display text when not loading', () => {
+  // 應顯示文字
+  test('should display name', () => {
     render(
       <DetailName
-        name={text}
+        name={name}
         isLoading={false}
       />
     );
-    const element = screen.getByText(text);
-    expect(element).toBeTruthy();
+    const nameElement = screen.getByTestId('name');
+    expect(nameElement).toBeTruthy();
   });
 
 
-  // 讀取中，不應顯示文字
-  test('should not display text when loading', () => {
+  // 讀取中，應顯示讀取骨架，不顯示名字
+  test('should display skeleton and not display text when loading', () => {
     render(
       <DetailName
-        name={text}
+        name={name}
         isLoading={true}
       />
     );
-    const element = screen.queryByText(text);
-    expect(element).toBeNull();
+    const skeletonElement = screen.getByTestId('skeleton');
+    const nameElement = screen.queryByTestId('name');
+    expect(skeletonElement).toBeTruthy();
+    expect(nameElement).toBeFalsy();
   });
 });

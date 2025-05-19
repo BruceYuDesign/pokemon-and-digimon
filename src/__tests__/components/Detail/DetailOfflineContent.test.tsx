@@ -10,7 +10,7 @@ describe('<DetailOfflineContent/>', () => {
     render(
       <DetailOfflineContent/>
     );
-
+    // TODO 補 test id
     const element = screen.getByText('Check your internet connection');
     expect(element).toBeTruthy();
   });

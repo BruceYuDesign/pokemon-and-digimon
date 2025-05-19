@@ -24,13 +24,17 @@ export default function DetailName(props: DetailNameProps) {
       <div
         className='util-skeleton
         rounded w-32 h-9'
+        data-testid='skeleton'
       ></div>
     );
   }
 
 
   return (
-    <h1 className='text-3xl text-center'>
+    <h1
+      className='text-3xl text-center'
+      data-testid='name'
+    >
       {props.name || 'Unknown'}
     </h1>
   );

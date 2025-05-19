@@ -33,7 +33,10 @@ export default function DetailProgressBar(props: DetailProgressBarProps) {
   // 讀取骨架
   if (props.isLoading) {
     return (
-      <div className='w-full flex flex-row justify-start items-center'>
+      <div
+        className='w-full flex flex-row justify-start items-center'
+        data-testid='skeleton'
+      >
         <span className='w-12 opacity-50 text-sm'>
           {props.label}
         </span>
@@ -46,10 +49,22 @@ export default function DetailProgressBar(props: DetailProgressBarProps) {
   }
 
 
+  // 比例
+  const ratio = `${props.value || 0}/${props.maxValue}`;
+  // 百分比
+  const percentage = `${(props.value || 0) / props.maxValue * 100}%`;
+
+
   return (
-    <div className='w-full flex flex-row justify-start items-center'>
+    <div
+      className='w-full flex flex-row justify-start items-center'
+      data-testid='progress-bar'
+    >
       {/* 標籤 */}
-      <span className='w-12 opacity-50 text-sm'>
+      <span
+        className='w-12 opacity-50 text-sm'
+        data-testid='label'
+      >
         {props.label}
       </span>
       <div className='relative flex flex-row justify-start items-stretch bg-foreground w-full h-6 rounded-full overflow-hidden'>
@@ -57,23 +72,30 @@ export default function DetailProgressBar(props: DetailProgressBarProps) {
         <div
           className='px-2 flex flex-row justify-start items-center rounded-full'
           style={{
-            width: `${(props.value || 0) / props.maxValue * 100}%`,
+            width: percentage,
           }}
         >
-          <span className='ml-auto text-background text-sm'>
-            {props.value || 0}/{props.maxValue}
+          <span
+            className='ml-auto text-background text-sm'
+            data-testid='value'
+          >
+            {ratio}
           </span>
         </div>
         {/* 進度條 有色底 白字 */}
         <div
           className='absolute left-0 top-0 bottom-0 px-2 flex flex-row justify-start items-center rounded-full overflow-hidden'
           style={{
-            width: `${(props.value || 0) / props.maxValue * 100}%`,
+            width: percentage,
             backgroundColor: props.progressColor,
           }}
+          data-testid='progress-color'
         >
-          <span className='ml-auto text-sm'>
-            {props.value || 0}/{props.maxValue}
+          <span
+            className='ml-auto text-sm'
+            data-testid='value'
+          >
+            {ratio}
           </span>
         </div>
       </div>
