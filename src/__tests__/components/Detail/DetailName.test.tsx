@@ -20,7 +20,7 @@ describe('<DetailName/>', () => {
 
 
   // 讀取中，應顯示讀取骨架，不顯示名字
-  test('should display skeleton and not display text when loading', () => {
+  test('should display skeleton and not display name when loading', () => {
     render(
       <DetailName
         name={name}
