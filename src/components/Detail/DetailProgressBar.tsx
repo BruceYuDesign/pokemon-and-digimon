@@ -35,7 +35,7 @@ export default function DetailProgressBar(props: DetailProgressBarProps) {
     return (
       <div
         className='w-full flex flex-row justify-start items-center'
-        data-testid='skeleton'
+        data-testid='detail-progress-bar-skeleton'
       >
         <span className='w-12 opacity-50 text-sm'>
           {props.label}
@@ -58,12 +58,12 @@ export default function DetailProgressBar(props: DetailProgressBarProps) {
   return (
     <div
       className='w-full flex flex-row justify-start items-center'
-      data-testid='progress-bar'
+      data-testid='detail-progress-bar-container'
     >
       {/* 標籤 */}
       <span
         className='w-12 opacity-50 text-sm'
-        data-testid='label'
+        data-testid='detail-progress-bar-label'
       >
         {props.label}
       </span>
@@ -77,7 +77,7 @@ export default function DetailProgressBar(props: DetailProgressBarProps) {
         >
           <span
             className='ml-auto text-background text-sm'
-            data-testid='value'
+            data-testid='detail-progress-bar-ratio'
           >
             {ratio}
           </span>
@@ -89,11 +89,11 @@ export default function DetailProgressBar(props: DetailProgressBarProps) {
             width: percentage,
             backgroundColor: props.progressColor,
           }}
-          data-testid='progress-color'
+          data-testid='detail-progress-bar-color'
         >
           <span
             className='ml-auto text-sm'
-            data-testid='value'
+            data-testid='detail-progress-bar-ratio'
           >
             {ratio}
           </span>

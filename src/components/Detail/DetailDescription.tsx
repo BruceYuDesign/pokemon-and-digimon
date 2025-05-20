@@ -23,7 +23,7 @@ export default function DetailDescription(props: DetailDescriptionProps) {
     return (
       <div
         className='w-full flex flex-col gap-4.5'
-        data-testid='skeleton'
+        data-testid='detail-description-skeleton'
       >
         <div
           className='util-skeleton
@@ -57,7 +57,7 @@ export default function DetailDescription(props: DetailDescriptionProps) {
   return (
     <p
       className='text-lg leading-loose'
-      data-testid='description'
+      data-testid='detail-description-text'
     >
       {props.description || 'No description available.'}
     </p>

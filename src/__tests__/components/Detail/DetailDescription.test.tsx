@@ -14,8 +14,8 @@ describe('<DetailDescription/>', () => {
         isLoading={false}
       />
     );
-    const descriptionElement = screen.getByTestId('description');
-    expect(descriptionElement).toBeTruthy();
+    const DetailDescriptionText = screen.getByTestId('detail-description-text');
+    expect(DetailDescriptionText).toBeTruthy();
   });
 
 
@@ -27,9 +27,9 @@ describe('<DetailDescription/>', () => {
         isLoading={true}
       />
     );
-    const skeletonElement = screen.getByTestId('skeleton');
-    const descriptionElement = screen.queryByTestId('description');
-    expect(skeletonElement).toBeTruthy();
-    expect(descriptionElement).toBeFalsy();
+    const detailDescriptionSkeleton = screen.getByTestId('detail-description-skeleton');
+    const detailDescriptionText = screen.queryByTestId('detail-description-text');
+    expect(detailDescriptionSkeleton).toBeTruthy();
+    expect(detailDescriptionText).toBeFalsy();
   });
 });

@@ -14,8 +14,8 @@ describe('<DetailName/>', () => {
         isLoading={false}
       />
     );
-    const nameElement = screen.getByTestId('name');
-    expect(nameElement).toBeTruthy();
+    const detailNameText = screen.getByTestId('detail-name-text');
+    expect(detailNameText).toBeTruthy();
   });
 
 
@@ -27,9 +27,9 @@ describe('<DetailName/>', () => {
         isLoading={true}
       />
     );
-    const skeletonElement = screen.getByTestId('skeleton');
-    const nameElement = screen.queryByTestId('name');
-    expect(skeletonElement).toBeTruthy();
-    expect(nameElement).toBeFalsy();
+    const detailNameSkeleton = screen.getByTestId('detail-name-skeleton');
+    const detailNameText = screen.queryByTestId('detail-name-text');
+    expect(detailNameSkeleton).toBeTruthy();
+    expect(detailNameText).toBeFalsy();
   });
 });

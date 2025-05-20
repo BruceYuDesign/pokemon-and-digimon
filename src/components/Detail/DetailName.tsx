@@ -24,7 +24,7 @@ export default function DetailName(props: DetailNameProps) {
       <div
         className='util-skeleton
         rounded w-32 h-9'
-        data-testid='skeleton'
+        data-testid='detail-name-skeleton'
       ></div>
     );
   }
@@ -33,7 +33,7 @@ export default function DetailName(props: DetailNameProps) {
   return (
     <h1
       className='text-3xl text-center'
-      data-testid='name'
+      data-testid='detail-name-text'
     >
       {props.name || 'Unknown'}
     </h1>

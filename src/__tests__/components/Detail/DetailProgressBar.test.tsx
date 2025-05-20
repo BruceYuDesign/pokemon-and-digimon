@@ -22,8 +22,8 @@ describe('<DetailProgressBar/>', () => {
         isLoading={false}
       />
     );
-    const labelElement = screen.getByTestId('label');
-    expect(labelElement.textContent).toBe(label);
+    const detailProgressBarLabel = screen.getByTestId('detail-progress-bar-label');
+    expect(detailProgressBarLabel.textContent).toBe(label);
   });
 
 
@@ -38,9 +38,9 @@ describe('<DetailProgressBar/>', () => {
         isLoading={false}
       />
     );
-    const valueElements = screen.getAllByTestId('value');
-    valueElements.forEach(valueElement => {
-      expect(valueElement.textContent).toBe(ratio);
+    const detailProgressBarRatios = screen.getAllByTestId('detail-progress-bar-ratio');
+    detailProgressBarRatios.forEach(detailProgressBarRatio => {
+      expect(detailProgressBarRatio.textContent).toBe(ratio);
     });
   });
 
@@ -56,8 +56,8 @@ describe('<DetailProgressBar/>', () => {
         isLoading={false}
       />
     );
-    const progressColorElement = screen.getByTestId('progress-color');
-    expect(progressColorElement.style.backgroundColor).toBe(progressColor);
+    const detailProgressBarColor = screen.getByTestId('detail-progress-bar-color');
+    expect(detailProgressBarColor.style.backgroundColor).toBe(progressColor);
   });
 
 
@@ -72,8 +72,8 @@ describe('<DetailProgressBar/>', () => {
         isLoading={false}
       />
     );
-    const progressColorElement = screen.getByTestId('progress-color');
-    expect(progressColorElement.style.width).toBe(percentage);
+    const detailProgressBarColor = screen.getByTestId('detail-progress-bar-color');
+    expect(detailProgressBarColor.style.width).toBe(percentage);
   });
 
 
@@ -88,9 +88,9 @@ describe('<DetailProgressBar/>', () => {
         isLoading={true}
       />
     );
-    const skeletonElement = screen.getByTestId('skeleton');
-    const progressBarElement = screen.queryByTestId('progress-bar');
-    expect(skeletonElement).toBeTruthy();
-    expect(progressBarElement).toBeFalsy();
+    const detailProgressBarColor = screen.getByTestId('detail-progress-bar-skeleton');
+    const detailProgressBarContainer = screen.queryByTestId('detail-progress-bar-container');
+    expect(detailProgressBarColor).toBeTruthy();
+    expect(detailProgressBarContainer).toBeFalsy();
   });
 });
