@@ -28,13 +28,17 @@ export default function DetailTypes(props: DetailTypesProps) {
       <div
         className='util-skeleton
         h-6 w-28 rounded-full'
+        data-testid='detail-types-skeleton'
       ></div>
     );
   }
 
 
   return (
-    <div className='flex flex-row items-center justify-center gap-4 flex-wrap'>
+    <div
+      className='flex flex-row items-center justify-center gap-4 flex-wrap'
+      data-testid='detail-types-container'
+    >
       {
         (props.types && props.types.length > 0) ? (
           // 含對應屬性
@@ -45,13 +49,17 @@ export default function DetailTypes(props: DetailTypesProps) {
               style={{
                 backgroundColor: props.typeColors[type] || 'var(--color-background-alt)',
               }}
+              data-testid='detail-types-item'
             >
               {type}
             </span>
           )
         )) : (
           // 未知屬性
-          <span className='px-3 min-w-28 h-6 flex items-center justify-center rounded-full bg-background-alt'>
+          <span
+            className='px-3 min-w-28 h-6 flex items-center justify-center rounded-full bg-background-alt'
+            data-testid='detail-types-unknown'
+          >
             Unknown
           </span>
         )

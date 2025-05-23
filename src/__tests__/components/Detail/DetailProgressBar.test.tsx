@@ -88,9 +88,9 @@ describe('<DetailProgressBar/>', () => {
         isLoading={true}
       />
     );
-    const detailProgressBarColor = screen.getByTestId('detail-progress-bar-skeleton');
+    const detailProgressBarSkeleton = screen.getByTestId('detail-progress-bar-skeleton');
     const detailProgressBarContainer = screen.queryByTestId('detail-progress-bar-container');
-    expect(detailProgressBarColor).toBeTruthy();
+    expect(detailProgressBarSkeleton).toBeTruthy();
     expect(detailProgressBarContainer).toBeFalsy();
   });
 });
