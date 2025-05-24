@@ -7,7 +7,10 @@ import { RiWifiOffLine } from 'react-icons/ri';
  */
 export default function OfflineMessage() {
   return (
-    <div className='pt-1 flex flex-col items-center justify-center gap-2'>
+    <div
+      className='pt-1 flex flex-col items-center justify-center gap-2'
+      data-testid='offline-message-container'
+    >
       <RiWifiOffLine
         className='text-5xl'
       />

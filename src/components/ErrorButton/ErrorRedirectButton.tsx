@@ -20,6 +20,7 @@ export default function ErrorRedirectButton(props: ErrorRedirectButtonProps) {
       className='flex flex-row items-center gap-2 px-6 py-1.5 rounded-full bg-foreground text-background cursor-pointer'
       onClick={props.redirectHandler}
       type='button'
+      data-testid='error-redirect-button'
     >
       <FaArrowLeft
         className='w-5 h-5'

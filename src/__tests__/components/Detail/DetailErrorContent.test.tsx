@@ -15,9 +15,8 @@ describe('<DetailErrorContent/>', () => {
         errorHandler={mockErrorHandler}
       />
     );
-    // TODO 補 test id
-    const element = screen.getByText('Retry');
-    expect(element).toBeTruthy();
+    const errorRetryButton = screen.getByTestId('error-retry-button');
+    expect(errorRetryButton).toBeTruthy();
   });
 
 
@@ -29,9 +28,8 @@ describe('<DetailErrorContent/>', () => {
         errorHandler={mockErrorHandler}
       />
     );
-    // TODO 補 test id
-    const element = screen.getByText('Redirect');
-    expect(element).toBeTruthy();
+    const errorRedirectButton = screen.getByTestId('error-redirect-button');
+    expect(errorRedirectButton).toBeTruthy();
   });
 
 
@@ -44,9 +42,8 @@ describe('<DetailErrorContent/>', () => {
         errorHandler={mockErrorHandler}
       />
     );
-    // TODO 補 test id
-    const retryButton = screen.getByRole('button');
-    fireEvent.click(retryButton);
+    const errorRetryButton = screen.getByTestId('error-retry-button');
+    fireEvent.click(errorRetryButton);
     expect(mockErrorHandler).toHaveBeenCalledTimes(1);
   });
 
@@ -60,9 +57,8 @@ describe('<DetailErrorContent/>', () => {
         errorHandler={mockErrorHandler}
       />
     );
-    // TODO 補 test id
-    const redirectButton = screen.getByRole('button');
-    fireEvent.click(redirectButton);
+    const errorRedirectButton = screen.getByTestId('error-redirect-button');
+    fireEvent.click(errorRedirectButton);
     expect(mockErrorHandler).toHaveBeenCalledTimes(1);
   });
 });
