@@ -1,7 +1,7 @@
 /**
  * 預設骨架數量
  */
-const DEFAULT_SKELETON_LENGTH = 12;
+export const DEFAULT_SKELETON_LENGTH = 12;
 
 
 interface CharacterCardsSkeletonProps {

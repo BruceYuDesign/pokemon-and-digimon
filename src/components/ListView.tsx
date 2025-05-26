@@ -9,7 +9,7 @@ interface ListViewProps {
   /**
    * 子元素
    */
-  children: React.ReactNode;
+  children?: React.ReactNode;
   /**
    * 下一頁的處理函式
    */
@@ -69,7 +69,7 @@ export default function ListView(props: ListViewProps) {
         {
           props.children || (
             // 讀取骨架，若沒有錯誤且沒有暫停請求
-            (!props.isError && !props.isPaused) && (
+            (props.isFetching && !props.isError && !props.isPaused) && (
               <CharacterCardsSkeleton/>
             )
           )
@@ -88,9 +88,9 @@ export default function ListView(props: ListViewProps) {
             />
           )
         }
-        {/* 錯誤重試 */}
+        {/* 錯誤重試，並且非暫停狀態 */}
         {
-          props.isError && (
+          (props.isError && !props.isPaused) && (
             <ErrorRetryButton
               retryHandler={props.nextPageHandler}
             />
