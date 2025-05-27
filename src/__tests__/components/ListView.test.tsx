@@ -67,5 +67,34 @@ describe('<ListView/>', () => {
     );
     const listViewItems = screen.getAllByTestId('character-cards-skeleton-item');
     expect(listViewItems.length).toBe(DEFAULT_SKELETON_LENGTH);
+    fireEvent(listViewItems[0], new Event('intersection'));
+  });
+
+
+  // 應呼叫下一頁處理函式，當下一頁元素進入視窗
+  test(`should call nextPageHandler when next page element enter viewport`, () => {
+    render(
+      <ListView
+        children={createChildren(ITEMS_PER_PAGE)}
+        nextPageHandler={mockNextPageHandler}
+        isFetching={false}
+        isError={false}
+        isPaused={false}
+        hasNextPage={true}
+      />
+    );
+    // 模擬 element 進入 viewport
+    intersectionCallback([
+      {
+        isIntersecting: true,
+        target: {} as Element,
+        intersectionRatio: 1,
+        time: 0,
+        boundingClientRect: {} as DOMRectReadOnly,
+        intersectionRect: {} as DOMRectReadOnly,
+        rootBounds: null,
+      }
+    ], {} as IntersectionObserver);
+    expect(mockNextPageHandler).toHaveBeenCalled();
   });
 });

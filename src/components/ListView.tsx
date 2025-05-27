@@ -79,6 +79,7 @@ export default function ListView(props: ListViewProps) {
       <div
         className='min-h-20 flex items-center justify-center'
         ref={nextPageElement}
+        data-testid='list-view-next-page'
       >
         {/* 讀取中 */}
         {
