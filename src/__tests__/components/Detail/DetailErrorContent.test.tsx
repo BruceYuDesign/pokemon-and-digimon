@@ -7,6 +7,11 @@ describe('<DetailErrorContent/>', () => {
   const mockErrorHandler = vi.fn();
 
 
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+
   // 應顯示錯誤重試按鈕
   test('should display retry button', () => {
     render(
@@ -35,7 +40,6 @@ describe('<DetailErrorContent/>', () => {
 
   // 點選重試，應執行錯誤處理函式
   test('should call errorHandler when click retry button', () => {
-    mockErrorHandler.mockClear();
     render(
       <DetailErrorContent
         errorButtonType='retry'
@@ -50,7 +54,6 @@ describe('<DetailErrorContent/>', () => {
 
   // 點選重定向，應執行錯誤處理函式
   test('should call errorHandler when click redirect button', () => {
-    mockErrorHandler.mockClear();
     render(
       <DetailErrorContent
         errorButtonType='redirect'
