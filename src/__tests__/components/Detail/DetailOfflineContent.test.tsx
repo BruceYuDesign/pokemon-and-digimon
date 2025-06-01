@@ -10,7 +10,7 @@ describe('<DetailOfflineContent/>', () => {
     render(
       <DetailOfflineContent/>
     );
-    const offlineMessageContainer = screen.getByTestId('offline-message-container');
-    expect(offlineMessageContainer).toBeTruthy();
+    const offlineMessage = screen.getByTestId('offline-message');
+    expect(offlineMessage).toBeTruthy();
   });
 });

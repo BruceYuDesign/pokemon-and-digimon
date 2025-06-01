@@ -81,11 +81,12 @@ export default function ListView(props: ListViewProps) {
         ref={nextPageElement}
         data-testid='list-view-next-page'
       >
-        {/* 讀取中 */}
+        {/* 讀取中，且已有資料 */}
         {
-          props.isFetching && (
+          (props.isFetching && props.children) && (
             <BiLoader
               className='w-8 h-8 mx-auto opacity-50 animate-spin'
+              data-testid='list-view-spinner'
             />
           )
         }

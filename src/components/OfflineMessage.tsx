@@ -9,7 +9,7 @@ export default function OfflineMessage() {
   return (
     <div
       className='pt-1 flex flex-col items-center justify-center gap-2'
-      data-testid='offline-message-container'
+      data-testid='offline-message'
     >
       <RiWifiOffLine
         className='text-5xl'
