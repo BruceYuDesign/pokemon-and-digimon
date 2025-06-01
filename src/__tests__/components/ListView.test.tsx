@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import ListView from '~/components/ListView';
 import { DEFAULT_SKELETON_LENGTH } from '~/components/CharacterCardsSkeleton';
 import { commonApiConfig } from '~/services/api/common';
