@@ -6,7 +6,7 @@ import { AiOutlineLoading } from 'react-icons/ai';
 /**
  * 錯誤重試次數上限
  */
-const ERROR_RETRY_LIMIT = 3;
+export const ERROR_RETRY_LIMIT = 3;
 
 
 interface ImageWithStatusProps {
@@ -86,6 +86,7 @@ export default function ImageWithStatus(props: ImageWithStatusProps) {
         <FaQuestion
           className='h-2/3 w-auto invert-25 opacity-25'
           onClick={handleUserRetry}
+          data-testid='image-with-status-error'
         />
       );
     }
@@ -97,6 +98,7 @@ export default function ImageWithStatus(props: ImageWithStatusProps) {
           style={{
             animationDuration: '3s',
           }}
+          data-testid='image-with-status-load'
         />
       );
     }
@@ -124,6 +126,7 @@ export default function ImageWithStatus(props: ImageWithStatusProps) {
         decoding='async'
         onError={imageOnError}
         onLoad={imageOnLoad}
+        data-testid='image-with-status-img'
       />
       <div className='absolute top-0 right-0 bottom-0 left-0 w-full h-full flex items-center justify-center'>
         {imageStateContent()}

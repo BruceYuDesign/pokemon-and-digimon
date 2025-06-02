@@ -33,6 +33,7 @@ export default function DetailThumbnail(props: DetailThumbnailProps) {
       <div
         className='util-skeleton
         h-[280px] rounded-b-4xl'
+        data-testid='detail-thumbnail-skeleton'
       ></div>
     );
   }
@@ -44,6 +45,7 @@ export default function DetailThumbnail(props: DetailThumbnailProps) {
       style={{
         backgroundColor: props.backgroundColor,
       }}
+      data-testid='detail-thumbnail-container'
     >
       <ImageWithStatus
         className='h-3/5'
