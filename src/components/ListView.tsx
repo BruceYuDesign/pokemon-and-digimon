@@ -9,7 +9,7 @@ interface ListViewProps {
   /**
    * 子元素
    */
-  children: React.ReactNode;
+  children?: React.ReactNode;
   /**
    * 下一頁的處理函式
    */
@@ -69,7 +69,7 @@ export default function ListView(props: ListViewProps) {
         {
           props.children || (
             // 讀取骨架，若沒有錯誤且沒有暫停請求
-            (!props.isError && !props.isPaused) && (
+            (props.isFetching && !props.isError && !props.isPaused) && (
               <CharacterCardsSkeleton/>
             )
           )
@@ -79,18 +79,20 @@ export default function ListView(props: ListViewProps) {
       <div
         className='min-h-20 flex items-center justify-center'
         ref={nextPageElement}
+        data-testid='list-view-next-page'
       >
-        {/* 讀取中 */}
+        {/* 讀取中，且已有資料 */}
         {
-          props.isFetching && (
+          (props.isFetching && props.children) && (
             <BiLoader
               className='w-8 h-8 mx-auto opacity-50 animate-spin'
+              data-testid='list-view-spinner'
             />
           )
         }
-        {/* 錯誤重試 */}
+        {/* 錯誤重試，並且非暫停狀態 */}
         {
-          props.isError && (
+          (props.isError && !props.isPaused) && (
             <ErrorRetryButton
               retryHandler={props.nextPageHandler}
             />

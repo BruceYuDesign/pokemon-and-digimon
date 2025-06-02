@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 
 
 // 要忽略的路徑
-const ignorePathnames = [
+export const ignorePathnames = [
   '/pokemon',
   '/digimon',
 ];

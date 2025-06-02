@@ -6,7 +6,7 @@ export interface CharacterCardProps {
   /**
    * 角色的名稱
    */
-  name: string;
+  name?: string;
   /**
    * 角色的圖片
    */
@@ -53,6 +53,7 @@ export default function CharacterCard(props: CharacterCardProps) {
             style={{
               backgroundColor: props.backgroundColor,
             }}
+            data-testid='character-card-content'
           >
             {/* 圖片 */}
             <ImageWithStatus
@@ -66,6 +67,7 @@ export default function CharacterCard(props: CharacterCardProps) {
               style={{
                 color: props.textColor,
               }}
+              data-testid='character-card-name'
             >
               {props.name || 'Unknown'}
             </h3>
